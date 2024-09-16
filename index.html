@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BioPortal Helper</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Chat Icon -->
+    <div class="chat-icon" id="chatIcon" onclick="toggleChatWindow()">💬</div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">BioPortal Helper</div>
+        <div class="chat-content" id="chatContent">
+            <div class="chat-message bot-message">Welcome to BioPortal! How can I help you?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message" onkeypress="handleInputKey(event)">
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle the chat window visibility
+        function toggleChatWindow() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.style.display = chatWindow.style.display === 'none' || chatWindow.style.display === '' ? 'flex' : 'none';
+        }
+
+        // Function to handle input and send messages on Enter
+        async function handleInputKey(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const message = input.value.trim();
+                if (message) {
+                    // Display user message in chat window
+                    addMessage(message, true);
+                    // Clear input field
+                    input.value = '';
+
+                    // Send message to Flask API
+                    const response = await fetch('http://127.0.0.1:5000/api/client_input', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message })
+                    });
+
+                    // Read response message and add to chat
+                    if (response.ok) {
+                        const data = await response.json();
+                        addMessage(data.response, false);
+                    }
+                }
+            }
+        }
+
+        // Function to add messages to the chat content
+        function addMessage(message, isUser) {
+            const chatContent = document.getElementById('chatContent');
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message' + (isUser ? ' user-message' : ' bot-message');
+            messageElement.textContent = message;
+            chatContent.appendChild(messageElement);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        }
+    </script>
+</body>
+</html>

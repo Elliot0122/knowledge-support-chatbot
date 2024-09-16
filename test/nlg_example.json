@@ -1,0 +1,57 @@
+{
+    "_comment": "The structure is a dictionary with the subdialogue as the first entry and the user speech act as the second entry. The value is a list of possible responses.",
+    "opening": {
+        "speech_act": "user's intent except for opening which is the initial state",
+        "opening": [
+            "Hello! Welcome to Google Maps. How can I assist you today?",
+            "Welcome to Google Maps! What would you like to search for today?"
+        ],
+        "negate": [
+            "It seems like you're not looking for this information. Would you like to explore other features?"
+        ],
+        "affirm": [
+            "Great! Let me assist you further."
+        ]
+    },
+    "identify location": {
+        "speech_act": "asking for the location of features or buttons",
+        "identify location": [
+            "The search bar is located at the top of the screen. You can type any location there.",
+            "You can find your saved places under 'Your Places' in the menu."
+        ],
+        "negate": [
+            "It seems like you couldn't find it. Would you like me to guide you step-by-step?"
+        ]
+    },
+    "request method": {
+        "speech_act": "asking for how to do a specific task",
+        "request method": [
+            "To get directions, simply type the destination in the search bar, then click 'Directions'.",
+            "To save a location, click on the location pin, and select 'Save'."
+        ],
+        "affirm": [
+            "I'm glad that worked for you!"
+        ]
+    },
+    "identify object": {
+        "speech_act": "asking about features and their purpose",
+        "identify object": [
+            "The 'Directions' button helps you find the best route to your destination.",
+            "The 'Street View' feature lets you see real-world imagery of locations."
+        ]
+    },
+    "identify action": {
+        "speech_act": "asking what to do next",
+        "identify action": [
+            "After setting your destination, click 'Start' to begin navigation.",
+            "Once you've saved a location, you can view it under 'Your Places' or share it with others."
+        ]
+    },
+    "request purpose": {
+        "speech_act": "asking why certain features are needed",
+        "request purpose": [
+            "Setting a destination allows Google Maps to calculate the best route for you.",
+            "Saving a place makes it easier to revisit or share it with others."
+        ]
+    }
+}

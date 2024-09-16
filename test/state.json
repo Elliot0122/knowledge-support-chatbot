@@ -1,0 +1,94 @@
+{
+    "states": [
+        "opening",
+        "progress tracking",
+        "location identification",
+        "method clarification",
+        "object explanation",
+        "action specification",
+        "purpose clarification"
+    ],
+    "transitions": [
+        {
+            "start_state": "opening",
+            "end_state": "progress tracking",
+            "event": "identify procedure progress"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "location identification",
+            "event": "identify location"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "method clarification",
+            "event": "request method"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "object explanation",
+            "event": "identify object"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "action specification",
+            "event": "identify action"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "purpose clarification",
+            "event": "request purpose"
+        }
+    ],
+    "events": [
+        "identify procedure progress",
+        "identify location",
+        "identify action",
+        "identify object",
+        "request purpose",
+        "request method",
+        "Affirm",
+        "Negate",
+        "Greetings",
+        "Other"
+    ],
+    "event_examples": {
+        "identify procedure progress": [
+            "when can I search for a new location?",
+            "when should I start navigation?"
+        ],
+        "identify location": [
+            "where can I find my saved places?",
+            "where is the current location pin?"
+        ],
+        "request method": [
+            "how can I get directions to this place?",
+            "how can I save this location?"
+        ],
+        "identify action": [
+            "what should I do next after setting a route?",
+            "what can I do after saving a place?"
+        ],
+        "identify object": [
+            "what does the 'Directions' button do?",
+            "what is the purpose of the 'Street View' option?"
+        ],
+        "request purpose": [
+            "why do I need to set a destination?",
+            "what is the purpose of saving a place?"
+        ],
+        "Affirm": [
+            "Yes",
+            "Correct"
+        ],
+        "Negate": [
+            "No",
+            "Incorrect"
+        ],
+        "Greetings": [
+            "Hello",
+            "Hi"
+        ]
+    },
+    "initial_state": "opening"
+}

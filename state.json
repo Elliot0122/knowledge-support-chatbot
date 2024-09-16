@@ -1,0 +1,94 @@
+{
+    "states": [
+        "opening",
+        "progress tracking",
+        "location identification",
+        "method clarification",
+        "object explanation",
+        "action specification",
+        "purpose clarification"
+    ],
+    "transitions": [
+        {
+            "start_state": "opening",
+            "end_state": "progress tracking",
+            "event": "identify procedure progress"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "location identification",
+            "event": "identify location"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "method clarification",
+            "event": "request method"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "object explanation",
+            "event": "identify object"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "action specification",
+            "event": "identify action"
+        },
+        {
+            "start_state": "opening",
+            "end_state": "purpose clarification",
+            "event": "request purpose"
+        }
+    ],
+    "events": [
+        "identify procedure progress",
+        "identify location",
+        "identify action",
+        "identify object",
+        "request purpose",
+        "request method",
+        "affirm",
+        "negate",
+        "greetings",
+        "other"
+    ],
+    "event_examples":{
+        "identify procedure progress":[
+            "when can I choose the alignment?",
+            "when should I create a new component?"
+        ],
+        "identify location":[
+            "where can I find the button for upload file?",
+            "where is the data?"
+        ],
+        "request method":[
+            "how can I create a new component?",
+            "how can I upload a file?"
+        ],
+        "identify action":[
+            "what should I do next?",
+            "what can I do now?"
+        ],
+        "identify object":[
+            "what does the button 'Getting Started' do?",
+            "what is alignment?"
+        ],
+        "request purpose":[
+            "what is the purpose of this component?",
+            "why do I need to choose a filter?"
+        ],
+        "affirm":[
+            "Yes",
+            "Correct"
+        ],
+        "negate":[
+            "No",
+            "Incorrect"
+        ],
+        "greetings":[
+            "Hello",
+            "Hi"
+        ]
+    },
+    "initial_state": "opening"
+}

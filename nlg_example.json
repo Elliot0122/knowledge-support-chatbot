@@ -1,0 +1,13 @@
+{
+    "_comment": "The structure is a dictionary with the subdialogue as the first entry and the user speech act as the second entry. The value is a list of possible responses.",
+    "opening":{
+        "speech_act": "user's intent except for opening which is the initial state",
+        "opening": [
+                "Hello! Welcome to BioPortal. How can I help you today?",
+                "Welcome to BioPortal! What would you like to do today?"
+        ],
+        "negate": [
+            "I'm sorry. Do you want to continue on other guidances?"
+        ]
+    }
+}
