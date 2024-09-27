@@ -2,7 +2,7 @@
     "states": [
         "opening",
         "progress tracking",
-        "location identification",
+        "gui location identification",
         "method clarification",
         "object explanation",
         "action specification",
@@ -16,8 +16,8 @@
         },
         {
             "start_state": "opening",
-            "end_state": "location identification",
-            "event": "identify location"
+            "end_state": "gui location identification",
+            "event": "gui location identification"
         },
         {
             "start_state": "opening",
@@ -42,24 +42,24 @@
     ],
     "events": [
         "identify procedure progress",
-        "identify location",
         "identify action",
         "identify object",
+        "gui location identification",
         "request purpose",
         "request method",
-        "Affirm",
-        "Negate",
-        "Greetings",
-        "Other"
+        "affirm",
+        "negate",
+        "greetings",
+        "other"
     ],
     "event_examples": {
         "identify procedure progress": [
             "when can I search for a new location?",
             "when should I start navigation?"
         ],
-        "identify location": [
-            "where can I find my saved places?",
-            "where is the current location pin?"
+        "gui location identification": [
+            "where is the search bar located?",
+            "how can I access the menu?"
         ],
         "request method": [
             "how can I get directions to this place?",
@@ -77,15 +77,15 @@
             "why do I need to set a destination?",
             "what is the purpose of saving a place?"
         ],
-        "Affirm": [
+        "affirm": [
             "Yes",
             "Correct"
         ],
-        "Negate": [
+        "negate": [
             "No",
             "Incorrect"
         ],
-        "Greetings": [
+        "greetings": [
             "Hello",
             "Hi"
         ]
