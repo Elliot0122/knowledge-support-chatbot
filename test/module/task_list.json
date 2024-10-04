@@ -1,17 +1,100 @@
 {
-    "get direction": {
-        "description": "Get directions from starting point to destination using a specific method of travel.",
-        "elements": {
-            "starting point": "None",
-            "destination": "None",
-            "method of travel": "None"
+    "workflow": {
+        "locate_destination": {
+            "share_location": {},
+            "save_location": {},
+            "get_directions": {
+                "select_travel_mode": {},
+                "add_multiple_destination": {}
+            }
         }
     },
-    "find nearby places": {
-        "description": "Search for specific places nearby provided location, which is usually current location.",
-        "elements": {
-            "type of place": "None",
-            "location": "None"
+    "tasks": {
+        "locate_destination": {
+            "description": "Locate a destination on the map",
+            "primitive_workflow": {
+                "click_search_bar": {
+                    "search_query_input": {
+                        "search_request": {
+                            "select_options_block": {}
+                        },
+                        "select_list_option": {
+                            "select_options_block": {}
+                        }
+                    }
+                }
+            }
+        },
+        "share_location": {
+            "description": "Share a location",
+            "primitive_workflow": {
+                "click_share_button": {
+                    "select_share_method_icon": {},
+                    "click_copy_link_button": {}
+                }
+            }
+        },
+        "save_location": {
+            "description": "Save a location",
+            "primitive_workflow": {
+                "click_save_button": {
+                    "select_list_option": {}
+                }
+            }
+        },
+        
+        "get_directions": {
+            "description": "Get directions from one location to another",
+            "primitive_workflow": {
+                "click_directions_button": {
+                    "click_start_location_search_bar": {
+                        "search_query_input": {
+                            "select_list_option": {},
+                            "search_request": {}
+                        }
+                    }
+                }
+            }
+        },
+        "select_travel_mode":{
+            "description": "Select a travel mode",
+            "primitive_workflow": {
+                "select_travel_mode_icon": {}
+            }
+        },
+        "add_one_more_destination": {
+            "description": "Add multiple destinations to a route",
+            "primitive_workflow": {
+                "click_add_destination_icon": {
+                    "click_choose_destination_search_bar": {
+                        "search_query_input": {
+                            "select_list_option": {
+                                "drag_destination_pin": {}
+                            },
+                            "search_request": {
+                                "drag_destination_pin": {}
+                            }
+                        }
+                    }
+                }
+            }
         }
+    },
+    "primitives": {
+        "click_add_destination_icon": "Click on the 'Add destination' button",
+        "click_choose_destination_search_bar": "Click on the search bar that says 'Choose Destination'",
+        "click_copy_link_button": "Click on the 'Copy Link' button",
+        "click_directions_button": "Click on the 'Directions' button",
+        "click_save_button": "Click on the 'Save' button",
+        "click_search_bar": "Click on the search bar",
+        "click_share_button": "Click on the 'Share' button",
+        "click_start_location_search_bar": "Click on the search bar that says 'Your Location'",
+        "drag_destination_pin": "Drag the destination pin to the desired order",
+        "search_query_input": "Input text into the activated search bar",
+        "search_request": "Click on the search button or press enter",
+        "select_list_option": "Click on the line of selected option in the list",
+        "select_options_block": "Click on the block of selected option",
+        "select_travel_mode_icon": "Click on the icon of selected travel mode",
+        "select_share_method_icon": "Click on the icon of selected share method"
     }
 }
