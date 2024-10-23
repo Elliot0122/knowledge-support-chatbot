@@ -1,41 +1,113 @@
-from typing import Any
+import random
 from load_json import load_task_list, load_fsm
+from nlu_unit import text_classification
 
 class FSM:
     def __init__(self, fsm_data):
         self.current_state = fsm_data["initial_state"]
         self.transitions = {}
-        self.states = set()
-        self.event_stack = []
+        self.states = set(fsm_data["states"])
+        self.events = fsm_data["events"]
+        self.event_examples = fsm_data["event_examples"]
+        
+        # Initialize transitions with multiple start states
         for transition in fsm_data["transitions"]:
-            self.add_transition(transition["start_state"], transition["end_state"], transition["event"])
-    
-    def add_transition(self, start_state, end_state, event):
-        if start_state not in self.transitions:
-            self.transitions[start_state] = {}
-        self.transitions[start_state][event] = end_state
-        self.states.add(start_state)
-        self.states.add(end_state)
-    
-    def state_changable(self, event):
-        if self.current_state in self.transitions and event in self.transitions[self.current_state]:
-            return True
-        else:
-            return False
+            for start_state in transition["start_state"]:
+                if start_state not in self.transitions:
+                    self.transitions[start_state] = {}
+                self.transitions[start_state][transition["event"]] = transition["end_state"]
 
-    def state_change(self, event):
-        self.current_state = self.transitions[self.current_state][event]
+    def state_transition(self, event):
+        """Transition to the next state based on the event and current state."""
+        if event in self.transitions.get(self.current_state, {}):
+            self.current_state = self.transitions[self.current_state][event]
+
+    def get_possible_events(self):
+        events = list(self.transitions.get(self.current_state, {}).keys())
+        examples = {}
+        for event in events:
+            if event not in self.event_examples:
+                events.remove(event)
+                continue
+            examples[event] = self.event_examples[event]
+        return events, examples
 
     def get_current_state(self):
         return self.current_state
+
+class SubFSM(FSM):
+    def __init__(self, fsm_data):
+        super().__init__(fsm_data)
+        self.initial_state = "start"
+        self.done = False
+        self.current_event = None
+
+    def _initialize_state(self):
+        self.current_state = self.initial_state
+    
+    def _handle_event(self, user_input):
+        events, examples = self.get_possible_events()
+        event, message = text_classification(user_input, events, examples)
+        self.current_event = event
+        
+        if event == "other":
+            print("I'm sorry, I didn't understand that. Please try again.")
+        
+        self.state_transition(event)
+        if self.get_current_state() == "done":
+            self.done = True
+
+        print(f"SubFSM Current State: {self.get_current_state()}")
+
+    def _is_done(self):
+        return self.done
+    
+    def _get_current_event(self):
+        return self.current_event
+
+class ParentFSM(FSM):
+    def __init__(self, fsm_data):
+        super().__init__(fsm_data)
+        self.sub_fsm_active = True
+        self.sub_fsms = {}
+
+        for state in self.states:
+            sub_fsm_data = load_fsm(file_path=f'module/submodule/{state}.json', type='fsm')
+            self.sub_fsms[state] = SubFSM(sub_fsm_data)
+
+    def _handle_event(self, user_input):
+
+        if self.sub_fsm_active:
+            self.sub_fsms[self.current_state]._handle_event(user_input)
+            if self.sub_fsms[self.current_state]._is_done():
+                self.sub_fsm_active = False
+
+        if not self.sub_fsm_active:
+            events, examples = self.get_possible_events()
+            event, message = text_classification(user_input, events, examples)
+            self.sub_fsms[self.current_state]._initialize_state()
+            self.state_transition(event)
+            self.sub_fsm_active = True
+            self.sub_fsms[self.current_state]._handle_event(user_input)
+            print(f"Parent FSM Current State: {self.get_current_state()}")
 
 class Primitive:
     def __init__(self, name, description):
         self.name = name
         self.description = description
         self.complete = False
-        # ranging from 1 to 5, from lay person to expert
-        self.proficiency = 1
+        '''
+        ranging from 1 to 10, from lay person to expert
+        low proficiency tend to triggers menu based guidance
+        high proficiency tend to confirm the user's capability
+        dialogue engine would use random sampling to determine which help to provide
+        if the random number is greater than the proficiency level, then dialogue engine would confirm the user's capability first
+        if the  user is incapable of completing the task or the random number is less than or equal to the proficiency level,
+        dialogue engine would provide menu based guidance to the user.
+
+        deterministic is fine. 
+        '''
+        self.proficiency = 4
 
     def _get_name(self):
         return self.name
@@ -65,6 +137,10 @@ class Primitive:
         if proficiency < 1 or proficiency > 5:
             raise ValueError(f"Proficiency level {proficiency} is out of range.")
         self.proficiency = proficiency
+
+    def _is_expert(self):
+        rand = random.randint(1, 10)
+        return rand <= self.proficiency
 
     def __repr__(self):
         return f"Token(name={self.name}, description={self.description}, proficiency={self.proficiency})"
@@ -112,14 +188,28 @@ class Task:
 class Workflow:
     def __init__(self, workflow):
         self.workflow = workflow
+        self.goal_setting_workflow = workflow
         self.current_task = workflow
         self.trajectory = []
+    
+    def _find_task_trajectory(self, task_name, current_workflow):
+        if task_name in current_workflow:
+            return [task_name]
+        else:
+            for key in current_workflow:
+                result = self._find_task_trajectory(task_name, current_workflow[key])
+                if result:
+                    return [key] + result
+        return None
     
     def _get_current_task(self):
         if self.trajectory != []:
             return self.trajectory[-1]
         else:
             return None
+        
+    def _reset_current_task(self):
+        self.current_task = self.workflow
 
     def _get_next_task_choices(self):
         choices = list(self.current_task.keys())
@@ -129,12 +219,27 @@ class Workflow:
     
     def _select_next_task(self, task_name):
         if task_name in self.current_task:
-            self.trajectory.append(task_name)
             self.current_task = self.current_task[task_name]
+    
+    def _get_workflow(self):
+        return self.workflow
 
-    def reset_workflow(self):
+    def _reset_workflow(self):
         self.current_task = self.workflow
         self.trajectory = []
+
+    def _get_goal_setting_workflow(self):
+        return self.goal_setting_workflow
+    
+    def _get_goal_setting_choices(self):
+        choices = list(self.goal_setting_workflow.keys())
+        return choices
+    
+    def _add_to_trajectory(self, task_name):
+        self.trajectory.append(task_name)
+
+    def _reset_goal_setting_workflow(self):
+        self.goal_setting_workflow = self.workflow
 
 class UserProfile:
     def __init__(self, user_id = None):
@@ -142,7 +247,7 @@ class UserProfile:
         task_data = load_task_list(type = "all")
 
         self.user_id = user_id
-        self.fsm = FSM(fsm_data)
+        self.dialogue_fsm = ParentFSM(fsm_data)
         self.workflow = Workflow(task_data['workflow'])
         self.tasks = self._create_task(task_data['tasks'])
         self.primitives = self._create_primitive(task_data['primitives'])
@@ -164,12 +269,27 @@ class UserProfile:
         for primitive_name, primitive_info in primitive_data.items():
             primitives[primitive_name] = Primitive(
                 name = primitive_name,
-                description = primitive_info["description"]
+                description = primitive_info
             )
         return primitives
     
+    def get_current_state(self):
+        return self.dialogue_fsm.get_current_state()
+    
+    def get_current_substate(self):
+        return self.dialogue_fsm.sub_fsms[self.dialogue_fsm.current_state].get_current_state()
+    
+    def handle_user_input(self, user_input):
+        self.dialogue_fsm._handle_event(user_input)
+    
     def get_user_id(self):
         return self.user_id
+    
+    def add_to_task_trajectory(self, task_name):
+        self.workflow.trajectory.append(task_name)
+    
+    def get_task_trajectory(self, task_name):
+        return self.workflow._find_task_trajectory(task_name, self.workflow.workflow)
     
     def get_current_task(self):
         current_task = self.workflow._get_current_task()
@@ -177,12 +297,22 @@ class UserProfile:
             return None
         else:
             return self.tasks[current_task]
+        
+    def get_current_task_name(self):
+        current_task = self.get_current_task()
+        return current_task._get_name()
+        
+    def reset_current_task(self):
+        self.workflow._reset_current_task()
     
     def get_next_task_choices(self):
         return self.workflow._get_next_task_choices()
     
     def select_next_task(self, task_name):
         self.workflow._select_next_task(task_name)
+
+    def get_workflow(self):
+        return self.workflow._get_workflow()
     
     def get_current_step(self):
         current_task = self.workflow._get_current_task()
@@ -223,8 +353,7 @@ class UserProfile:
     def add_proficiency(self):
         current_step = self.get_current_step()
         if current_step != None:
-            current_step._add_proficiency()
-         
+            current_step._add_proficiency()  
 
     def sub_proficiency(self):
         current_step = self.get_current_step()
@@ -236,8 +365,30 @@ class UserProfile:
         if current_step != None:
             current_step._set_proficiency(proficiency)
 
+    def get_expertise(self):
+        current_step = self.get_current_step()
+        if current_step != None:
+            return current_step._is_expert()
+        else:
+            return None
+    
     def check_task_completion(self):
         return self.get_current_task()._get_completion() and self.get_current_step().check_completion()
     
     def reset_task(self):
         self.get_current_task()._reset_task()
+
+    def get_goal_setting_workflow(self):
+        return self.workflow._get_goal_setting_workflow()
+    
+    def get_goal_setting_choices(self):
+        return self.workflow._get_goal_setting_choices()
+    
+    def add_to_goal_setting_trajectory(self, task_name):
+        self.workflow.trajectory.append(task_name)
+    
+    def reset_goal_setting_workflow(self):
+        self.workflow._reset_goal_setting_workflow()
+
+    def get_sub_fsm_current_event(self):
+        return self.dialogue_fsm.sub_fsms[self.dialogue_fsm.current_state]._get_current_event()

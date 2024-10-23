@@ -1,104 +1,135 @@
 {
-    "_comment": "The structure is a dictionary with the subdialogue as the first entry and the user speech act as the second entry. The value is a list of possible responses.",
     "opening": {
-        "speech_act": "user's intent except for opening which is the initial state",
-        "opening": [
-            "Hello! Welcome to Google Maps. How can I assist you today?",
-            "Hi there! You're on Google Maps. What would you like to explore today?",
-            "Greetings! Looking for a new destination or some guidance with directions?"
-        ],
-        "negate": [
-            "It looks like you're unsure. Would you like some help exploring features or searching for locations?",
-            "No problem. If you're not looking for directions, perhaps I can assist with saved places or nearby recommendations?"
-        ],
-        "affirm": [
-            "Great! Let's get started with your request.",
-            "Perfect! How can I guide you today on Google Maps?"
-        ],
-        "greetings": [
-            "Hello! How can I help you today?",
-            "Hi there! What can I assist you with on Google Maps?",
-            "Greetings! Ready to explore or navigate to a new place?"
-        ]
+        "greeting": {
+            "prompt": "this state is for greeting, please use the following examples as reference to greet the user",
+            "examples": [
+                "Welcome to Google Map Assist. How can I help you today?",
+                "Greetings from Google Map Assist! What can I assist you with today?",
+                "Need directions or have a question about Google Maps? I'm here to assist!"
+            ]
+        }
     },
-    "gui location identification": {
-        "speech_act": "asking for the location of features or buttons",
-        "identify location": [  
-            "You can find the search bar at the top of the screen. Type your destination or a place you'd like to explore.",
-            "Looking for saved places? They are under 'Your Places' in the menu. Just tap the menu icon and select 'Your Places'.",
-            "The current location pin is the blue dot. This shows where you are right now on the map."
-        ],
-        "negate": [
-            "It seems you're having trouble finding it. Would you like step-by-step instructions?",
-            "Can't locate it? I can walk you through how to access the menu or search bar if needed."
-        ],
-        "affirm": [
-            "Glad you found it! Is there anything else you need help with?",
-            "Great! Now that you’ve located it, do you want to search for a place or explore nearby?"
-        ]
+    "goal clarification": {
+        "task identification": {
+            "prompt": "this state is to try to identify the goal the user expect to perform, please use the following examples as reference and generate munu-based questions to identify the goal with the user",
+            "tasks":{
+                "locate_destination":{
+                    "examples": [
+                        "No worries. You can locate a destination on the map, do you want to do that?"
+                    ]
+                },
+                "share_location":{
+                    "examples": [
+                        "Do you want to share this location?"
+                    ]
+                },
+                "save_location":{
+                    "examples": [
+                        "Would you like to save this location to your list?"
+                    ]
+                },
+                "get_directions":{
+                    "examples": [
+                        "Do you want to get the directions to this place?"
+                    ]
+                },
+                "select_travel_mode":{
+                    "examples": [
+                        "Do you want to select the travel mode?"
+                    ]
+                },
+                "add_multiple_destination":{
+                    "examples": [
+                        "Do you want to go to other places before arriving the destination?"
+                    ]
+                }
+            }
+        },
+        "correct task": {
+            "prompt": "this state is versatile because it depends on the task. If the task needs further information, ask the user to provide them. If there are no tasks left, move to the done state to start performing the task. Please use the following examples as reference to confirm the task with the user",
+            "tasks":{
+                "locate_destination":{
+                    "examples": [
+                        "where do you want to go?",
+                        "what is the destination?"
+                    ]
+                },
+                "share_location":{
+                    "examples": [
+                        "Great, Let's add share location to you plan."
+                    ]
+                },
+                "save_location":{
+                    "examples": [
+                        "Great, Let's add save location to you plan."
+                    ]
+                },
+                "get_directions":{
+                    "examples": [
+                        "Awesome, Let's add get directions to you plan."
+                    ]
+                },
+                "select_travel_mode":{
+                    "examples": [
+                        "Great, Let's add select travel mode to you plan."
+                    ]
+                },
+                "add_multiple_destination":{
+                    "examples": [
+                        "Awesome, Let's add more destinations after locating the final destination."
+                    ]
+                },
+                "None":{
+                    "examples": [
+                        "Seems that you have a plan right now. Let me guide you through the process."
+                    ]
+                }
+            }
+        },
+        "incorrect task identification": {
+            "prompt": "this state is to show apology on wrong prediction, please use the following examples as reference to apologize to the user",
+            "tasks":{
+                "locate_destination":{
+                    "examples": [
+                        "No worries. You can locate a destination on the map, do you want to do that?"
+                    ]
+                },
+                "share_location":{
+                    "examples": [
+                        "You have another choice. Do you want to share this location?"
+                    ]
+                },
+                "save_location":{
+                    "examples": [
+                        "What about saving this location to your list?"
+                    ]
+                },
+                "get_directions":{
+                    "examples": [
+                        "You have one more choice. Do you want to get the directions to this place?"
+                    ]
+                },
+                "select_travel_mode":{
+                    "examples": [
+                        "Do you want to select the travel mode?"
+                    ]
+                },
+                "add_multiple_destination":{
+                    "examples": [
+                        "Do you want to go to other places before arriving the destination?"
+                    ]
+                }
+            }
+        }
     },
-    "request method": {
-        "speech_act": "asking for how to do a specific task",
-        "request method": [
-            "To get directions, type the location in the search bar, select 'Directions', and choose your mode of travel: walking, driving, cycling, or public transport.",
-            "If you want to save a location, tap on the pin, and you'll see an option to 'Save' it to a list like 'Favorites' or 'Want to go'.",
-            "To share a location, tap on the pin, and select 'Share'. You can send it via messaging apps or email."
-        ],
-        "negate": [
-            "It looks like that method didn’t work for you. Would you like to try another way or ask about something else?",
-            "Sorry for the trouble. Is there a different task you'd like help with, or should I explain it differently?"
-        ],
-        "affirm": [
-            "Awesome! You're all set. Anything else I can help you with on Google Maps?",
-            "Glad that worked! Would you like assistance with anything else, like saving or sharing places?"
-        ]
+    "task identification": {
+        "task identification": {},
+        "correct task": {},
+        "incorrect task": {}
     },
-    "identify object": {
-        "speech_act": "asking about features and their purpose",
-        "identify object": [
-            "The 'Directions' button helps you get the best route to your destination based on current traffic, distance, and travel mode.",
-            "The 'Street View' option allows you to see a 360-degree view of streets and locations as if you're standing there.",
-            "The 'Layers' button in the corner helps you switch between map types like satellite view, terrain, or even traffic data."
-        ],
-        "negate": [
-            "Sorry for the confusion. Would you like me to explain another feature or clarify further?",
-            "It seems like that feature wasn't what you were looking for. Can I help you explore a different one?"
-        ],
-        "affirm": [
-            "Glad that explanation helped! Do you want to try it out, or are there any other features you're curious about?",
-            "Perfect! Let me know if you'd like to use that feature or need help with anything else."
-        ]
-    },
-    "identify action": {
-        "speech_act": "asking what to do next",
-        "identify action": [
-            "After setting your destination, you can tap 'Start' to begin navigation. Google Maps will guide you with turn-by-turn directions.",
-            "Once you've found the place you're looking for, you can save it, share it, or even explore it in Street View for a virtual look.",
-            "After saving a location, you can easily access it later under 'Your Places'. You can also organize it into custom lists."
-        ],
-        "negate": [
-            "Not sure what to do next? I can suggest some actions based on what you’ve explored so far. Just let me know.",
-            "It seems you're not ready to proceed. Would you like to backtrack and revisit the previous steps?"
-        ],
-        "affirm": [
-            "Fantastic! Let's move forward with navigation or other actions you want to take.",
-            "Great! You're ready to explore. Let me know if you'd like further assistance."
-        ]
-    },
-    "request purpose": {
-        "speech_act": "asking why certain features are needed",
-        "request purpose": [
-            "Setting a destination helps Google Maps calculate the fastest or most efficient route, taking traffic, distance, and transport options into account.",
-            "Saving a location allows you to easily access it later without searching again. You can also create lists of favorite spots to share or revisit.",
-            "Sharing a location makes it easy to let others know where you're meeting or heading, and they can use it to get directions themselves."
-        ],
-        "negate": [
-            "It seems you're not sure about the purpose. Would you like more details on why this feature could be useful?",
-            "If you're unsure about this feature's purpose, I can help you decide if it's relevant to your needs."
-        ],
-        "affirm": [
-            "Glad that explanation made sense! Let me know if you'd like to explore how to use that feature.",
-            "Great! Now that you know why it’s useful, would you like to proceed with using the feature?"
-        ]
+    "task performing": {
+        "task identification": {},
+        "correct task": {},
+        "incorrect task": {}
     }
 }

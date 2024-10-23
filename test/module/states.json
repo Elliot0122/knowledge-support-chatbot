@@ -1,93 +1,59 @@
 {
     "states": [
         "opening",
-        "progress tracking",
-        "gui location identification",
-        "method clarification",
-        "object explanation",
-        "action specification",
-        "purpose clarification"
+        "goal clarification",
+        "task identification",
+        "task performing"
     ],
     "transitions": [
         {
-            "start_state": "opening",
-            "end_state": "progress tracking",
-            "event": "identify procedure progress"
+            "start_state": ["opening", "goal clarification", "task identification", "task performing"],
+            "end_state": "opening",
+            "event": "restart conversation"
         },
         {
-            "start_state": "opening",
-            "end_state": "gui location identification",
-            "event": "gui location identification"
+            "start_state": ["opening"],
+            "end_state": "goal clarification",
+            "event": "show uncertainty"
         },
         {
-            "start_state": "opening",
-            "end_state": "method clarification",
-            "event": "request method"
+            "start_state": ["opening"],
+            "end_state": "task identification",
+            "event": "identify task"
         },
         {
-            "start_state": "opening",
-            "end_state": "object explanation",
-            "event": "identify object"
-        },
-        {
-            "start_state": "opening",
-            "end_state": "action specification",
-            "event": "identify action"
-        },
-        {
-            "start_state": "opening",
-            "end_state": "purpose clarification",
-            "event": "request purpose"
+            "start_state": ["goal clarification", "task identification", "task performing"],
+            "end_state": "task performing",
+            "event": "agree to perform task"
         }
     ],
     "events": [
-        "identify procedure progress",
-        "identify action",
-        "identify object",
-        "gui location identification",
-        "request purpose",
-        "request method",
-        "affirm",
-        "negate",
-        "greetings",
-        "other"
+        "restart conversation",
+        "show uncertainty",
+        "identify task",
+        "perform task"
     ],
     "event_examples": {
-        "identify procedure progress": [
-            "when can I search for a new location?",
-            "when should I start navigation?"
+        "restart conversation": [
+            "Can we start over",
+            "Start again",
+            "Start from the beginning"
         ],
-        "gui location identification": [
-            "where is the search bar located?",
-            "how can I access the menu?"
+        "show uncertainty": [
+            "I don't know",
+            "I don't know what to do",
+            "I’m not sure what I need",
+            "I’m confused about how to proceed"
         ],
-        "request method": [
-            "how can I get directions to this place?",
-            "how can I save this location?"
+        "identify task": [
+            "I want to go to Davis",
+            "where is the memorial union",
+            "How to save the location"
         ],
-        "identify action": [
-            "what should I do next after setting a route?",
-            "what can I do after saving a place?"
-        ],
-        "identify object": [
-            "what does the 'Directions' button do?",
-            "what is the purpose of the 'Street View' option?"
-        ],
-        "request purpose": [
-            "why do I need to set a destination?",
-            "what is the purpose of saving a place?"
-        ],
-        "affirm": [
+        "perform task": [
             "Yes",
+            "Sure",
             "Correct"
-        ],
-        "negate": [
-            "No",
-            "Incorrect"
-        ],
-        "greetings": [
-            "Hello",
-            "Hi"
         ]
     },
     "initial_state": "opening"

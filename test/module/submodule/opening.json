@@ -1,0 +1,46 @@
+{
+    "states": [
+        "greeting",
+        "done"
+    ],
+    "transitions": [
+        {
+            "start_state": ["greeting"],
+            "end_state": "greeting",
+            "event": "greeting"
+        },
+        {
+            "start_state": ["greeting"],
+            "end_state": "done",
+            "event": "provide need"
+        },
+        {
+            "start_state": ["greeting"],
+            "end_state": "done",
+            "event": "show uncertainty"
+        }
+    ],
+    "events": [
+        "greeting",
+        "provide need",
+        "show uncertainty"
+    ],
+    "event_examples": {
+        "greeting": [
+            "Hello",
+            "Hi",
+            "Hey"
+        ],
+        "provide need": [
+            "I want to go to Davis",
+            "where is the memorial union",
+            "How to save the location"
+        ],
+        "show uncertainty": [
+            "I don't know what to do",
+            "I’m not sure what I need",
+            "I’m confused about how to proceed"
+        ]
+    },
+    "initial_state": "greeting"
+}
