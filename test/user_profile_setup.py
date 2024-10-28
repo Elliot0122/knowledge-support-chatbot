@@ -47,6 +47,7 @@ class SubFSM(FSM):
     
     def _handle_event(self, user_input):
         events, examples = self.get_possible_events()
+        print("SubFSM")
         event, message = text_classification(user_input, events, examples)
         self.current_event = event
         
@@ -61,9 +62,6 @@ class SubFSM(FSM):
 
     def _is_done(self):
         return self.done
-    
-    def _get_current_event(self):
-        return self.current_event
 
 class ParentFSM(FSM):
     def __init__(self, fsm_data):
@@ -84,6 +82,7 @@ class ParentFSM(FSM):
 
         if not self.sub_fsm_active:
             events, examples = self.get_possible_events()
+            print("ParentFSM")
             event, message = text_classification(user_input, events, examples)
             self.sub_fsms[self.current_state]._initialize_state()
             self.state_transition(event)
@@ -238,8 +237,16 @@ class Workflow:
     def _add_to_trajectory(self, task_name):
         self.trajectory.append(task_name)
 
+    def _select_next_goal_setting_task(self, task_name):
+        if task_name in self.goal_setting_workflow:
+            self.goal_setting_workflow = self.goal_setting_workflow[task_name]
+
     def _reset_goal_setting_workflow(self):
         self.goal_setting_workflow = self.workflow
+
+    def _remove_goal_setting_task(self, task_name):
+        if task_name in self.goal_setting_workflow:
+            del self.goal_setting_workflow[task_name]
 
 class UserProfile:
     def __init__(self, user_id = None):
@@ -250,6 +257,8 @@ class UserProfile:
         self.dialogue_fsm = ParentFSM(fsm_data)
         self.workflow = Workflow(task_data['workflow'])
         self.tasks = self._create_task(task_data['tasks'])
+        self.all_tasks_options = list(task_data['tasks'].keys())
+        self.current_all_tasks = self.all_tasks_options
         self.primitives = self._create_primitive(task_data['primitives'])
 
     def _create_task(self, task_data):
@@ -273,6 +282,12 @@ class UserProfile:
             )
         return primitives
     
+    def get_current_all_tasks(self):
+        return self.current_all_tasks
+    
+    def remove_task_from_current_all_tasks(self, task):
+        self.current_all_tasks.remove(task)
+
     def get_current_state(self):
         return self.dialogue_fsm.get_current_state()
     
@@ -386,9 +401,12 @@ class UserProfile:
     
     def add_to_goal_setting_trajectory(self, task_name):
         self.workflow.trajectory.append(task_name)
+
+    def select_next_goal_setting_task(self, task_name):
+        self.workflow._select_next_goal_setting_task(task_name)
     
     def reset_goal_setting_workflow(self):
         self.workflow._reset_goal_setting_workflow()
-
-    def get_sub_fsm_current_event(self):
-        return self.dialogue_fsm.sub_fsms[self.dialogue_fsm.current_state]._get_current_event()
+    
+    def remove_goal_setting_task(self, task_name):
+        self.workflow._remove_goal_setting_task(task_name)

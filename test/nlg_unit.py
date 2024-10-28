@@ -10,6 +10,7 @@ def load_nlg_example():
 # Function to generate sentences
 def generate_sentences(sample_sentence, state, substate, task = None):
     if task:
+        print(task)
         return secrets.choice(sample_sentence[state][substate]["tasks"][task]["examples"])
     else:
         return secrets.choice(sample_sentence[state][substate]["examples"])

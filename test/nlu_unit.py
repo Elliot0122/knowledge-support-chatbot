@@ -27,20 +27,19 @@ def send_to_llm(messages):
             message["content"] = output
             return message
 
-def task_classification_learning(task_list):
-    user_input = f'remember a function called "task classification" as description: Your task is to perform classification with an input. The classes are'
+def task_classification(input, task_list):
+    user_input = f'Your task is to find out "{input}" implies which task. The tasks are'
     for task in task_list:
         user_input += f' {task},'
     user_input = user_input[:-1]
-    user_input += ('I want to identify which task in the list the user input is related to.\nTo trigger this function call, the user input is in between the bracket of “task classification()”. Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer.')
-    message_list = [{"role": "user", "content": user_input}]
-    _message = send_to_llm(message_list)
-
-def task_classification(user_input):
-    user_input = f'task classification({user_input})'
+    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case. Always pick one of the tasks'
+    # user_input += ('I want to identify which task in the list the user input is related to.\n Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer.')
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)
-    return message["content"]
+    task  = message["content"]
+    print(f'task: {task}')
+    # print()
+    return task
 
 def text_classification(input, events, examples):
     user_input = f'Your task is to perform text classification on "{input}". The classes are'
@@ -55,7 +54,7 @@ def text_classification(input, events, examples):
         user_input = user_input[:-2]
         user_input += '. '
     
-    user_input += f'Don’t reply anything else. Only reply the answer.'
+    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case.'
     # print()
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)

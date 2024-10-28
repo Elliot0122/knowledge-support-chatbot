@@ -12,7 +12,7 @@
         {
             "start_state": ["greeting"],
             "end_state": "done",
-            "event": "provide need"
+            "event": "identify task"
         },
         {
             "start_state": ["greeting"],
@@ -22,7 +22,7 @@
     ],
     "events": [
         "greeting",
-        "provide need",
+        "identify task",
         "show uncertainty"
     ],
     "event_examples": {
@@ -31,7 +31,7 @@
             "Hi",
             "Hey"
         ],
-        "provide need": [
+        "identify task": [
             "I want to go to Davis",
             "where is the memorial union",
             "How to save the location"

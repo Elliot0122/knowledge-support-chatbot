@@ -24,14 +24,14 @@
         {
             "start_state": ["goal clarification", "task identification", "task performing"],
             "end_state": "task performing",
-            "event": "agree to perform task"
+            "event": "confirm task"
         }
     ],
     "events": [
         "restart conversation",
         "show uncertainty",
         "identify task",
-        "perform task"
+        "confirm task"
     ],
     "event_examples": {
         "restart conversation": [
@@ -50,7 +50,7 @@
             "where is the memorial union",
             "How to save the location"
         ],
-        "perform task": [
+        "confirm task": [
             "Yes",
             "Sure",
             "Correct"

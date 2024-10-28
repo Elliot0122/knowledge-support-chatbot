@@ -18,6 +18,11 @@
             "event": "provide information"
         },
         {
+            "start_state": ["correct task"],
+            "end_state": "task identification",
+            "event": "confirm"
+        },
+        {
             "start_state": ["task identification", "incorrect task identification"],
             "end_state": "correct task",
             "event": "confirm"

@@ -87,7 +87,7 @@
             }
         },
         "incorrect task identification": {
-            "prompt": "this state is to show apology on wrong prediction, please use the following examples as reference to apologize to the user",
+            "prompt": "this state is to deliver other options for the user, please use the following examples as reference to reply to the user",
             "tasks":{
                 "locate_destination":{
                     "examples": [
@@ -123,9 +123,76 @@
         }
     },
     "task identification": {
-        "task identification": {},
-        "correct task": {},
-        "incorrect task": {}
+        "task identification": {
+            "prompt": "this state is to try to identify the task the user expect to perform. The user should be well aware of what they would want to perform. please use the following examples as reference and reply to the user",
+            "tasks":{
+                "locate_destination":{
+                    "examples": [
+                        "What you meant is that you want to locate the Memorial Union on the map, right?"
+                    ]
+                },
+                "share_location":{
+                    "examples": [
+                        "Just to confirm, do you mean you want to share this location?"
+                    ]
+                },
+                "save_location":{
+                    "examples": [
+                        "Just to confirm, do you mean you want to save this location to your list?"
+                    ]
+                },
+                "get_directions":{
+                    "examples": [
+                        "To clarify, do you mean you want to get the directions to Memorial Union?"
+                    ]
+                },
+                "select_travel_mode":{
+                    "examples": [
+                        "Just to confirm, do you mean you want to change the travel mode?"
+                    ]
+                },
+                "add_multiple_destination":{
+                    "examples": [
+                        "Just to confirm, do you mean you want to go to multiple destinations?"
+                    ]
+                }
+            }
+        },
+        "incorrect task identification": {
+            "prompt": "this state is to show apology and provide the new prediction to the user, please use the following examples as reference to reply to the user",
+            "tasks":{
+                "locate_destination":{
+                    "examples": [
+                        "I'm sorry I got it wrong. Do you mean you want locate the Memorial Union on the map?"
+                    ]
+                },
+                "share_location":{
+                    "examples": [
+                        "My apology. Do you mean you want to share this location?"
+                    ]
+                },
+                "save_location":{
+                    "examples": [
+                        "I feel bad about the wrong prediction. Do you mean you want to save this location to your list?"
+                    ]
+                },
+                "get_directions":{
+                    "examples": [
+                        "My bad. Do you mean you want to get the directions to Memorial Union?"
+                    ]
+                },
+                "select_travel_mode":{
+                    "examples": [
+                        "I'm sorry I got it wrong. Do you mean you want to change the travel mode?"
+                    ]
+                },
+                "add_multiple_destination":{
+                    "examples": [
+                        "I feel bad about the wrong prediction. Do you mean you want to go to multiple destinations?"
+                    ]
+                }
+            }
+        }
     },
     "task performing": {
         "task identification": {},
