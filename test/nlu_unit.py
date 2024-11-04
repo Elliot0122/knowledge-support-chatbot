@@ -11,7 +11,6 @@ def send_to_llm(messages):
         json={"model": model, "messages": messages, "stream": True},
         stream=True
     )
-    # print(f"Response content: {r.text}")
     r.raise_for_status()
     output = ""
 
@@ -28,17 +27,16 @@ def send_to_llm(messages):
             return message
 
 def task_classification(input, task_list):
-    user_input = f'Your task is to find out "{input}" implies which task. The tasks are'
+    print(task_list)
+    user_input = f'Your task is to find out "{input}" implies which task. It would only be in the tasks listed in the following:'
     for task in task_list:
         user_input += f' {task},'
     user_input = user_input[:-1]
-    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case. Always pick one of the tasks'
+    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case. tasks should only be picked from the list above.'
     # user_input += ('I want to identify which task in the list the user input is related to.\n Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer.')
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)
     task  = message["content"]
-    print(f'task: {task}')
-    # print()
     return task
 
 def text_classification(input, events, examples):
@@ -49,18 +47,17 @@ def text_classification(input, events, examples):
     user_input += f'Here are some examples for each classs: '
     
     for event in events:
+        if event not in examples:
+            continue
         for example in examples[event]:
             user_input += f'"{example}", '
         user_input = user_input[:-2]
         user_input += '. '
     
     user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case.'
-    # print()
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)
     event  = message["content"]
-    print(f'event: {event}')
-    # print()
     return event, message
 
 def profiency_eval_learning():

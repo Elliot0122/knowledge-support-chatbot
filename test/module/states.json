@@ -3,11 +3,11 @@
         "opening",
         "goal clarification",
         "task identification",
-        "task performing"
+        "task execution"
     ],
     "transitions": [
         {
-            "start_state": ["opening", "goal clarification", "task identification", "task performing"],
+            "start_state": ["opening", "goal clarification", "task identification", "task execution"],
             "end_state": "opening",
             "event": "restart conversation"
         },
@@ -22,8 +22,8 @@
             "event": "identify task"
         },
         {
-            "start_state": ["goal clarification", "task identification", "task performing"],
-            "end_state": "task performing",
+            "start_state": ["goal clarification", "task identification"],
+            "end_state": "task execution",
             "event": "confirm task"
         }
     ],

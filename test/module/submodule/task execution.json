@@ -1,0 +1,32 @@
+{
+    "states": [
+        "start",
+        "confirm task execution",
+        "task execution",
+        "done"
+    ],
+    "transitions": [
+        {
+            "start_state": ["start"],
+            "end_state": "confirm task execution",
+            "event": ""
+        },
+        {
+            "start_state": ["confirm task execution"],
+            "end_state": "task execution",
+            "event": "confirm"
+        },
+        {
+            "start_state": ["task execution"],
+            "end_state": "done",
+            "event": ""
+        }
+    ],
+    "events": [
+        "confirm"
+    ],
+    "event_examples": {
+
+    },
+    "initial_state": "start"
+}

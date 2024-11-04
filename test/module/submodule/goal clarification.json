@@ -33,14 +33,9 @@
             "event": "negate"
         },
         {
-            "start_state": ["correct task"],
+            "start_state": ["task identification", "correct task", "incorrect task identification"],
             "end_state": "done",
-            "event": "provide information done"
-        }, 
-        {
-            "start_state": ["incorrect task identification"],
-            "end_state": "done",
-            "event": "negate done"
+            "event": "done"
         }
     ],
     "events": [

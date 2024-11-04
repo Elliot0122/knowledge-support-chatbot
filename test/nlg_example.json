@@ -1,6 +1,6 @@
 {
     "opening": {
-        "greeting": {
+        "start": {
             "prompt": "this state is for greeting, please use the following examples as reference to greet the user",
             "examples": [
                 "Welcome to Google Map Assist. How can I help you today?",
@@ -194,9 +194,7 @@
             }
         }
     },
-    "task performing": {
-        "task identification": {},
-        "correct task": {},
-        "incorrect task": {}
+    "task execution": {
+        
     }
 }
