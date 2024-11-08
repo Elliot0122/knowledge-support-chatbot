@@ -13,13 +13,13 @@
         "locate_destination": {
             "description": "Locate a destination on the map",
             "primitive_workflow": {
-                "click_search_bar": {
-                    "search_query_input": {
-                        "search_request": {
-                            "select_options_block": {}
+                "click the search bar": {
+                    "input the destinaiton name or address": {
+                        "initial the search process": {
+                            "choose the option you want from the search results": {}
                         },
-                        "select_list_option": {
-                            "select_options_block": {}
+                        "choose the option you want from the search results": {
+                            "choose the option you want from the search results": {}
                         }
                     }
                 }
@@ -28,17 +28,16 @@
         "share_location": {
             "description": "Share a located destination",
             "primitive_workflow": {
-                "click_share_button": {
-                    "select_share_method_icon": {},
-                    "click_copy_link_button": {}
+                "click the share button": {
+                    "select the method to share the location": {}
                 }
             }
         },
         "save_location": {
             "description": "Save a located destination to a list",
             "primitive_workflow": {
-                "click_save_button": {
-                    "select_list_option": {}
+                "click the save button": {
+                    "choose the option you want from the search results": {}
                 }
             }
         },
@@ -46,39 +45,37 @@
         "get_directions": {
             "description": "Get directions from one location to another",
             "primitive_workflow": {
-                "click_directions_button": {
-                    "click_start_location_search_bar": {
-                        "search_query_input": {
-                            "select_list_option": {
-                                "select_options_block": {}
+                "click the directions button": {
+                    "click the search bar of the starting point": {
+                        "input the destinaiton name or address": {
+                            "choose the option you want from the search results": {
+                                "choose the option you want from the search results": {}
                             },
-                            "search_request": {
-                                "select_options_block": {}
+                            "initial the search process": {
+                                "choose the option you want from the search results": {}
                             }
                         }
                     },
-                    "select_options_block": {}
+                    "choose the option you want from the search results": {}
                 }
             }
         },
         "select_travel_mode":{
             "description": "Select a travel mode",
             "primitive_workflow": {
-                "select_travel_mode_icon": {}
+                "select the travel mode that you plan to": {}
             }
         },
         "add_one_more_destination": {
             "description": "Add multiple destinations to a route",
             "primitive_workflow": {
-                "click_add_destination_icon": {
-                    "click_choose_destination_search_bar": {
-                        "search_query_input": {
-                            "select_list_option": {
-                                "drag_destination_pin": {}
-                            },
-                            "search_request": {
-                                "drag_destination_pin": {}
-                            }
+                "click the add destination icon": {
+                    "input the destinaiton name or address": {
+                        "choose the option you want from the search results": {
+                            "drag the destination bars": {}
+                        },
+                        "initial the search process": {
+                            "drag the destination bars": {}
                         }
                     }
                 }
@@ -86,20 +83,17 @@
         }
     },
     "primitives": {
-        "click_add_destination_icon": "Click on the 'Add destination' button",
-        "click_choose_destination_search_bar": "Click on the search bar that says 'Choose Destination'",
-        "click_copy_link_button": "Click on the 'Copy Link' button",
-        "click_directions_button": "Click on the 'Directions' button",
-        "click_save_button": "Click on the 'Save' button",
-        "click_search_bar": "Click on the search bar",
-        "click_share_button": "Click on the 'Share' button",
-        "click_start_location_search_bar": "Click on the search bar that says 'Your Location'",
-        "drag_destination_pin": "Drag the destination pin to the desired order",
-        "search_query_input": "Input text into the activated search bar",
-        "search_request": "Click on the search button or press enter",
-        "select_list_option": "Click on the line of selected option in the list",
-        "select_options_block": "Click on the block of selected option",
-        "select_travel_mode_icon": "Click on the icon of selected travel mode",
-        "select_share_method_icon": "Click on the icon of selected share method"
+        "click the add destination icon": "On the top left of the screen under the search bars, there is an icon that says 'Add Destination'. Click on it",
+        "click the directions button": "In the middle left of the screen, there is a blue button that says 'Directions'. Click on it",
+        "click the save button": "In the middle left of the screen and on the right of the blue button, there is a button that says 'Save'. Click on it",
+        "click the search bar": "On the top left of the screen, there is a long white bar that says 'Search Google Maps'. Click on it to activate the search bar",
+        "click the share button": "In the middle left of the screen and on the right of the blue button, there is a button that says 'Share'. Click on it",
+        "click the search bar of the starting point": "On the top left of the screen, there are multiple long white search bars. Click on the topmost search bar that says 'Your Location' or 'Choose starting point'",
+        "drag the destination bars": "On the left of the long white search bars, there are multiple white circles. Drag the white circles to change the order of the destinations",
+        "input the destinaiton name or address": "Make sure the search bar is flashing with a vertical bar. If not, click on the search bar. Then, input the destination by typing on the keyboard.",
+        "initial the search process": "On the right of the search bar, there is a magnifier icon. Click on it or press enter when search bar is activated",
+        "choose the option you want from the search results": "There are multiple options showing on the left of the screen, click on the one you want to select",
+        "select the travel mode that you plan to": "On the top left of the screen, there are multiple icons representing different travel modes. Click on the one you want to select",
+        "select the method to share the location": "In the middle of the screen, there are multiple icons for sharing methods in the new square appeared. Click on the one you want to select"
     }
 }

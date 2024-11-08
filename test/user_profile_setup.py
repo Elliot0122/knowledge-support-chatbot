@@ -47,9 +47,9 @@ class SubFSM(FSM):
     def _subfsm_handle_event(self, event):
         if event == "other":
             print("I'm sorry, I didn't understand that. Please try again.")
-        print(f'SubFSM(state:{self.current_state} event:{event})')
+        # print(f'SubFSM(state:{self.current_state} event:{event})')
         self._state_transition(event)
-        print(f'SubFSM(state:{self.current_state})')
+        # print(f'SubFSM(state:{self.current_state})')
         if self._get_current_state() == "done":
             self.done = True
 
@@ -67,15 +67,15 @@ class ParentFSM(FSM):
     def _parent_fsm_handle_event(self, event):
         if event == "other":
             print("I'm sorry, I didn't understand that. Please try again.")
-        print(f'ParentFSM(state:{self.current_state} event:{event})')
+        # print(f'ParentFSM(state:{self.current_state} event:{event})')
         self._state_transition(event)
         self.sub_fsms[self.current_state]._initialize_state()
-        print(f'ParentFSM(state:{self.current_state})')
+        # print(f'ParentFSM(state:{self.current_state})')
 
 class Primitive:
-    def __init__(self, name, description):
+    def __init__(self, name, detail):
         self.name = name
-        self.description = description
+        self.detail = detail
         self.complete = False
         '''
         ranging from 1 to 5, from lay person to expert
@@ -84,7 +84,22 @@ class Primitive:
         else the user is considered a lay person
         the system provides more detailed help to the user
         '''
-        self.proficiency = 2
+        self.proficiency = 3
+
+    def get_proficiency(self):
+        return self.proficiency
+    
+    def add_one_to_proficiency(self):
+        self.proficiency += 1
+
+    def subtract_one_from_proficiency(self):
+        self.proficiency -= 1
+
+    def get_name(self):
+        return self.name
+    
+    def get_detail(self):
+        return self.detail
 
 class Task:
     def __init__(self, name, description, primitive_workflow):
@@ -92,14 +107,35 @@ class Task:
         self.description = description
         self.primitive_workflow = primitive_workflow
         self.current_pimitive = primitive_workflow
-        self.complete = False
-        self.trajectory = []
+        self.next_primitive_selection = None
+
+    def get_name(self):
+        return self.name
+    
+    def get_current_primitive_options(self):
+        return list(self.current_pimitive.keys())
+    
+    def set_next_primitive_selection(self, primitive_name):
+        self.next_primitive_selection = primitive_name
+    
+    def get_next_primitive_selection(self):
+        return self.next_primitive_selection
+    
+    def remove_primitive(self, primitive_name):
+        del self.current_pimitive[primitive_name]
+
+    def select_next_primitive(self):
+        self.current_pimitive = self.current_pimitive[self.next_primitive_selection]
+
+    def is_done(self):
+        return self.current_pimitive == {}
 
 class Workflow:
-    def __init__(self, workflow, trajectory = []):
+    def __init__(self, workflow):
         self.workflow = workflow
         self.current_task = workflow
-        self.trajectory = trajectory
+        self.trajectory_index = 0
+        self.trajectory = []
         self.task_input = None
         self.all_task_options = self._find_all_task_options(workflow, [])
         self.current_all_task_options = self.all_task_options
@@ -113,8 +149,17 @@ class Workflow:
 
         return all_task_options
     
+    def _get_trajectory_index(self):
+        return self.trajectory_index
+    
+    def _add_one_to_trajectory_index(self):
+        self.trajectory_index += 1
+    
     def _add_to_trajectory(self, task_name):
         self.trajectory.append(task_name)
+    
+    def _get_trajectory(self):
+        return self.trajectory
 
     def _task_input_is_None(self):
         return self.task_input is None
@@ -129,12 +174,23 @@ class Workflow:
         return self.current_all_task_options
     
     def _set_current_task(self, task_name):
-        self.current_task = task_name
+        self.trajectory = []
+        self.trajectory = self._find_task_trajectory(task_name, self.workflow)
+
+    def  _find_task_trajectory(self, task_name, current_workflow):
+        if task_name in current_workflow:
+            return [task_name]
+        else:
+            for key in current_workflow:
+                result = self._find_task_trajectory(task_name, current_workflow[key])
+                if result:
+                    return [key] + result
+        return None
 
     def _get_current_task(self):
-        return self.current_task
+        return self.trajectory[-1]
     
-    def _remove_task_from_current_all_task_options(self, task):
+    def _remove_task(self, task):
         self.current_all_task_options.remove(task)
 
 class GoalSettingWorkflow(Workflow):
@@ -183,10 +239,10 @@ class UserProfile:
     def _create_primitive(self, primitive_data):
         # Dynamically create primitives from the provided primitive_data dictionary
         primitives = {}
-        for primitive_name, primitive_info in primitive_data.items():
+        for primitive_name, primitive_detail in primitive_data.items():
             primitives[primitive_name] = Primitive(
                 name = primitive_name,
-                description = primitive_info
+                detail = primitive_detail
             )
         return primitives
     
@@ -225,9 +281,18 @@ class UserProfile:
 
     def remove_goal_setting_task(self, task_name):
         self.goal_setting_workflow._remove_task(task_name)
+
+    def get_workflow_trajectory_index(self):
+        return self.workflow._get_trajectory_index()
+    
+    def add_one_to_workflow_trajectory_index(self):
+        self.workflow._add_one_to_trajectory_index()
     
     def add_to_workflow_trajectory(self, task_name):
         self.workflow._add_to_trajectory(task_name)
+
+    def get_workflow_trajectory(self):
+        return self.workflow._get_trajectory()
 
     def workflow_task_input_is_None(self):
         return self.workflow._task_input_is_None()
@@ -248,4 +313,10 @@ class UserProfile:
         return self.workflow._get_current_task()
     
     def remove_task_from_workflow_current_all_task_options(self, task):
-        self.workflow._remove_task_from_current_all_task_options(task)
+        self.workflow._remove_task(task)
+
+    def get_task(self, task_name):
+        return self.tasks[task_name]
+    
+    def get_primitive(self, primitive_name):
+        return self.primitives[primitive_name]

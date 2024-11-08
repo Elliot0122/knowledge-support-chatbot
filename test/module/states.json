@@ -24,14 +24,20 @@
         {
             "start_state": ["goal clarification", "task identification"],
             "end_state": "task execution",
-            "event": "confirm task"
+            "event": "confirm"
+        },
+        {
+            "start_state": ["goal clarification", "task identification"],
+            "end_state": "task execution",
+            "event": "negate"
         }
     ],
     "events": [
         "restart conversation",
         "show uncertainty",
         "identify task",
-        "confirm task"
+        "confirm",
+        "negate"
     ],
     "event_examples": {
         "restart conversation": [
@@ -50,11 +56,17 @@
             "where is the memorial union",
             "How to save the location"
         ],
-        "confirm task": [
+        "confirm": [
             "Yes",
             "Sure",
             "Correct"
+        ],
+        "negate": [
+            "No",
+            "I don't think so",
+            "Incorrect"
         ]
+        
     },
     "initial_state": "opening"
 }

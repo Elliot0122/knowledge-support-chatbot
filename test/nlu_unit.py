@@ -27,7 +27,6 @@ def send_to_llm(messages):
             return message
 
 def task_classification(input, task_list):
-    print(task_list)
     user_input = f'Your task is to find out "{input}" implies which task. It would only be in the tasks listed in the following:'
     for task in task_list:
         user_input += f' {task},'
@@ -40,7 +39,7 @@ def task_classification(input, task_list):
     return task
 
 def text_classification(input, events, examples):
-    user_input = f'Your task is to perform text classification on "{input}". The classes are'
+    user_input = f'Your task is to perform text classification on the user input: "{input}". The classes are'
     for event in events:
         user_input += f' {event},'
     user_input += f' error.'
@@ -60,14 +59,14 @@ def text_classification(input, events, examples):
     event  = message["content"]
     return event, message
 
-def profiency_eval_learning():
-    user_input = f'remember a function called "proficiency evaluation" as description: Your task is to perform proficiency evaluation with an input and a relevant task. You need to decide if the user is able to follow the instruction or do it by themselves. if they are good at it reply True, if not, reply False.'
-    user_input += ('\nTo trigger this function call, the task and the user input is in between the bracket of “proficiency evaluation()”, such as “proficiency evaluation("get direction", How can I get to Davis). Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer and in lower case.')
-    message_list = [{"role": "user", "content": user_input}]
-    _message = send_to_llm(message_list)
+# def profiency_eval_learning():
+#     user_input = f'remember a function called "proficiency evaluation" as description: Your task is to perform proficiency evaluation with an input and a relevant task. You need to decide if the user is able to follow the instruction or do it by themselves. if they are good at it reply True, if not, reply False.'
+#     user_input += ('\nTo trigger this function call, the task and the user input is in between the bracket of “proficiency evaluation()”, such as “proficiency evaluation("get direction", How can I get to Davis). Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer and in lower case.')
+#     message_list = [{"role": "user", "content": user_input}]
+#     _message = send_to_llm(message_list)
 
-def profiency_eval(current_task, user_input, message_list):
-    user_input = f'proficiency evaluation("{current_task}",{user_input})'
-    message_list = [{"role": "user", "content": user_input}]
-    message = send_to_llm(message_list)
-    return message["content"]
+# def profiency_eval(current_task, user_input, message_list):
+#     user_input = f'proficiency evaluation("{current_task}",{user_input})'
+#     message_list = [{"role": "user", "content": user_input}]
+#     message = send_to_llm(message_list)
+#     return message["content"]

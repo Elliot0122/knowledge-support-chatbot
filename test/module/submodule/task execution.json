@@ -2,31 +2,76 @@
     "states": [
         "start",
         "confirm task execution",
-        "task execution",
+        "provide instruction",
+        "provide detail",
+        "provide other instruction",
         "done"
     ],
     "transitions": [
         {
             "start_state": ["start"],
             "end_state": "confirm task execution",
-            "event": ""
-        },
-        {
-            "start_state": ["confirm task execution"],
-            "end_state": "task execution",
             "event": "confirm"
         },
         {
-            "start_state": ["task execution"],
+            "start_state": ["start"],
+            "end_state": "confirm task execution",
+            "event": "negate"
+        },
+        {
+            "start_state": ["confirm task execution", "provide instruction", "provide detail", "provide other instruction"],
+            "end_state": "provide instruction",
+            "event": "confirm"
+        },
+        {
+            "start_state": ["provide instruction", "provide detail", "provide other instruction"],
+            "end_state": "provide detail",
+            "event": "show uncertainty"
+        },
+        {
+            "start_state": ["provide instruction", "provide detail", "provide other instruction"],
+            "end_state": "provide detail",
+            "event": "request help"
+        },
+        {
+            "start_state": ["provide instruction", "provide other instruction"],
+            "end_state": "provide other instruction",
+            "event": "negate"
+        },
+        {
+            "start_state": ["provide instruction", "provide detail", "confirm task execution"],
             "end_state": "done",
-            "event": ""
+            "event": "done"
         }
     ],
     "events": [
-        "confirm"
+        "confirm",
+        "negate",
+        "show uncertainty",
+        "request help"
     ],
     "event_examples": {
-
+        "confirm": [
+            "Yes",
+            "Sure",
+            "Correct",
+            "Okay"
+        ],
+        "negate": [
+            "No",
+            "Nope",
+            "Incorrect"
+        ],
+        "show uncertainty": [
+            "I'm not sure",
+            "I don't know",
+            "I'm confused"
+        ],
+        "request help": [
+            "Can you help me?",
+            "I need help",
+            "Help"
+        ]
     },
     "initial_state": "start"
 }
