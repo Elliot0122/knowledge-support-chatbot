@@ -1,4 +1,4 @@
-from nlu_unit import task_classification, text_classification
+from nlu_unit import task_classification, text_classification, name_entity_recognition
 from nlg_unit import generate_sentences, load_nlg_example
 from user_profile_setup import UserProfile
 import secrets
@@ -14,6 +14,11 @@ def initialization():
 
 def run(user, user_input, sample_sentence):
     ## nlu for sub fsm
+    # restart conversation with specific key word that should be told to the user
+    if user_input == "restart conversation":
+        user.parent_fsm_handle_event("restart conversation")
+        user.subfsm_handle_event("greeting")
+
     events, examples = user.get_subfsm_possible_events()
     event, message = text_classification(user_input, events, examples)
     current_task_name = None

@@ -59,14 +59,12 @@ def text_classification(input, events, examples):
     event  = message["content"]
     return event, message
 
-# def profiency_eval_learning():
-#     user_input = f'remember a function called "proficiency evaluation" as description: Your task is to perform proficiency evaluation with an input and a relevant task. You need to decide if the user is able to follow the instruction or do it by themselves. if they are good at it reply True, if not, reply False.'
-#     user_input += ('\nTo trigger this function call, the task and the user input is in between the bracket of “proficiency evaluation()”, such as “proficiency evaluation("get direction", How can I get to Davis). Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer and in lower case.')
-#     message_list = [{"role": "user", "content": user_input}]
-#     _message = send_to_llm(message_list)
+def name_entity_recognition(input):
+    user_input = f'Your task is to perform name entity recognition on the user input: "{input}". For example, the name entity in "I want to go to MU" is "MU" and the name entity in "I want to locate a Japanese restaurant" is "Japanese restaurant". Just reply the name without quotation or any other indications. Do not reply any other thing.'
+    message_list = [{"role": "user", "content": user_input}]
+    message = send_to_llm(message_list)
+    name  = message["content"]
+    print(name)
 
-# def profiency_eval(current_task, user_input, message_list):
-#     user_input = f'proficiency evaluation("{current_task}",{user_input})'
-#     message_list = [{"role": "user", "content": user_input}]
-#     message = send_to_llm(message_list)
-#     return message["content"]
+if __name__ == "__main__":
+    name_entity_recognition("I want to go to Kemper Hall")

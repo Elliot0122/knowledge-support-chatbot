@@ -33,18 +33,12 @@
         }
     ],
     "events": [
-        "restart conversation",
         "show uncertainty",
         "identify task",
         "confirm",
         "negate"
     ],
     "event_examples": {
-        "restart conversation": [
-            "Can we start over",
-            "Start again",
-            "Start from the beginning"
-        ],
         "show uncertainty": [
             "I don't know",
             "I don't know what to do",
