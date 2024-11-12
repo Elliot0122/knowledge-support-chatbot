@@ -26,7 +26,7 @@ class FSM:
     def get_current_state(self):
         return self.current_state
 
-def load_fsm_from_json(file_path = "state.json"):
+def load_fsm_from_json(file_path = "module/states.json"):
     with open(file_path, 'r') as file:
         data = json.load(file)
     
@@ -40,4 +40,4 @@ def load_fsm_from_json(file_path = "state.json"):
 
 # Example usage
 if __name__ == "__main__":
-    fsm = load_fsm_from_json('state.json')
+    fsm = load_fsm_from_json('module/states.json')

@@ -1,0 +1,57 @@
+{
+    "states": [
+        "start",
+        "done"
+    ],
+    "transitions": [
+        {
+            "start_state": ["start"],
+            "end_state": "start",
+            "event": "greeting"
+        },
+        {
+            "start_state": ["start"],
+            "end_state": "start",
+            "event": "restart conversation"
+        },
+        {
+            "start_state": ["start"],
+            "end_state": "done",
+            "event": "identify task"
+        },
+        {
+            "start_state": ["start"],
+            "end_state": "done",
+            "event": "show uncertainty"
+        }
+    ],
+    "events": [
+        "greeting",
+        "identify task",
+        "show uncertainty",
+        "restart conversation"
+    ],
+    "event_examples": {
+        "greeting": [
+            "Hello",
+            "Hi",
+            "Hey"
+        ],
+        "identify task": [
+            "I want to go to Davis",
+            "where is the memorial union",
+            "How to save the location"
+        ],
+        "show uncertainty": [
+            "I don't know what to do",
+            "I’m not sure what I need",
+            "I’m confused about how to proceed"
+        ],
+        "restart conversation": [
+            "Can we start over",
+            "Start again",
+            "Start from the beginning"
+        ]
+    },
+    "initial_state": "start"
+}

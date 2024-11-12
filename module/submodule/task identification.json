@@ -1,0 +1,48 @@
+{
+    "states": [
+        "start",
+        "task identification",
+        "incorrect task identification",
+        "done"
+    ],
+    "transitions": [
+        {
+            "start_state": ["start"],
+            "end_state": "task identification",
+            "event": "identify task"
+        },
+        {
+            "start_state": ["task identification", "incorrect task identification"],
+            "end_state": "incorrect task identification",
+            "event": "negate"
+        },
+        {
+            "start_state": ["task identification", "incorrect task identification"],
+            "end_state": "done",
+            "event": "confirm"
+        }
+    ],
+    "events": [
+        "identify task",
+        "confirm",
+        "negate"
+    ],
+    "event_examples": {
+        "identify task": [
+            "I want to go to Davis",
+            "where is the memorial union",
+            "How to save the location"
+        ],
+        "confirm": [
+            "Yes",
+            "Sure",
+            "Correct"
+        ],
+        "negate": [
+            "No",
+            "Incorrect",
+            "Not right"
+        ]
+    },
+    "initial_state": "start"
+}

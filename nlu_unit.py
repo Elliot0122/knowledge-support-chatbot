@@ -1,26 +1,9 @@
 import json
 import requests
+from load_json import load_fsm, load_task_list
 
 # NOTE: ollama must be running for this to work, start the ollama app or run `ollama serve`
-model = "llama3"  # TODO: update this for whatever model you wish to use
-
-def few_shot_learning_for_text_classification(events, examples, all_messages):
-
-    user_input = f'Your task is to do text classification for all the following inputs. The labels are'
-    for event in events:
-        user_input += f' {event},'
-    user_input = user_input[:-1]
-    user_input += f'. Hear are some examples for each label: '
-    for event in events:
-        if event == "other": continue
-        user_input += f'{event}: '
-        for example in examples[event]:
-            user_input += f'"{example}", '
-        user_input = user_input[:-2]
-        user_input += '. '
-    user_input += f'. Classify the following input text according to the labels and reply with just the label."'
-    all_messages.append({"role": "user", "content": user_input})
-    _message = send_to_llm(all_messages)
+model = "llama3"
 
 def send_to_llm(messages):
     r = requests.post(
@@ -43,16 +26,45 @@ def send_to_llm(messages):
             message["content"] = output
             return message
 
+def task_classification(input, task_list):
+    user_input = f'Your task is to find out "{input}" implies which task. It would only be in the tasks listed in the following:'
+    for task in task_list:
+        user_input += f' {task},'
+    user_input = user_input[:-1]
+    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case. tasks should only be picked from the list above.'
+    # user_input += ('I want to identify which task in the list the user input is related to.\n Please reply the answer if I prompt the function call. Don’t reply anything else. Only reply the answer.')
+    message_list = [{"role": "user", "content": user_input}]
+    message = send_to_llm(message_list)
+    task  = message["content"]
+    return task
+
+def text_classification(input, events, examples):
+    user_input = f'Your task is to perform text classification on the user input: "{input}". The classes are'
+    for event in events:
+        user_input += f' {event},'
+    user_input += f' error.'
+    user_input += f'Here are some examples for each classs: '
+    
+    for event in events:
+        if event not in examples:
+            continue
+        for example in examples[event]:
+            user_input += f'"{example}", '
+        user_input = user_input[:-2]
+        user_input += '. '
+    
+    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case.'
+    message_list = [{"role": "user", "content": user_input}]
+    message = send_to_llm(message_list)
+    event  = message["content"]
+    return event, message
+
+def name_entity_recognition(input):
+    user_input = f'Your task is to perform name entity recognition on the user input: "{input}". For example, the name entity in "I want to go to MU" is "MU" and the name entity in "I want to locate a Japanese restaurant" is "Japanese restaurant". Just reply the name without quotation or any other indications. Do not reply any other thing.'
+    message_list = [{"role": "user", "content": user_input}]
+    message = send_to_llm(message_list)
+    name  = message["content"]
+    print(name)
+
 if __name__ == "__main__":
-    all_messages = []
-    with open('state.json', 'r') as file:
-        data = json.load(file)
-    few_shot_learning_for_text_classification(data["events"], data["event_examples"])
-    while True:
-        user_input = input()
-        if user_input == "exit":
-            exit()
-        all_messages.append({"role": "user", "content": user_input})
-        message = send_to_llm(all_messages)
-        all_messages.append(message)
-        print(message["content"])
+    name_entity_recognition("I want to go to Kemper Hall")

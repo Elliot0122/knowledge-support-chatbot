@@ -2,7 +2,7 @@
     "states": [
         "opening",
         "progress tracking",
-        "location identification",
+        "gui location identification",
         "method clarification",
         "object explanation",
         "action specification",
@@ -16,8 +16,8 @@
         },
         {
             "start_state": "opening",
-            "end_state": "location identification",
-            "event": "identify location"
+            "end_state": "gui location identification",
+            "event": "gui location identification"
         },
         {
             "start_state": "opening",
@@ -42,9 +42,9 @@
     ],
     "events": [
         "identify procedure progress",
-        "identify location",
         "identify action",
         "identify object",
+        "gui location identification",
         "request purpose",
         "request method",
         "affirm",
@@ -52,40 +52,42 @@
         "greetings",
         "other"
     ],
-    "event_examples":{
-        "identify procedure progress":[
-            "when can I choose the alignment?",
-            "when should I create a new component?"
+    "event_examples": {
+        "identify procedure progress": [
+            "when can I search for a new location?",
+            "when should I start navigation?"
         ],
-        "identify location":[
-            "where can I find the button for upload file?",
-            "where is the data?"
+        "gui location identification": [
+            "where is the search bar located?",
+            "how can I access the menu?"
         ],
-        "request method":[
-            "how can I create a new component?",
-            "how can I upload a file?"
+        "request method": [
+            "how can I get directions to this place?",
+            "how can I save this location?",
+            "I want to go to somewhere",
+            "I want to go to a nearby"
         ],
-        "identify action":[
-            "what should I do next?",
-            "what can I do now?"
+        "identify action": [
+            "what should I do next after setting a route?",
+            "what can I do after saving a place?"
         ],
-        "identify object":[
-            "what does the button 'Getting Started' do?",
-            "what is alignment?"
+        "identify object": [
+            "what does the 'Directions' button do?",
+            "what is the purpose of the 'Street View' option?"
         ],
-        "request purpose":[
-            "what is the purpose of this component?",
-            "why do I need to choose a filter?"
+        "request purpose": [
+            "why do I need to set a destination?",
+            "what is the purpose of saving a place?"
         ],
-        "affirm":[
+        "affirm": [
             "Yes",
             "Correct"
         ],
-        "negate":[
+        "negate": [
             "No",
             "Incorrect"
         ],
-        "greetings":[
+        "greetings": [
             "Hello",
             "Hi"
         ]
