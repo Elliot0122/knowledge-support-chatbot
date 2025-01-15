@@ -11,11 +11,6 @@
         },
         {
             "start_state": ["start"],
-            "end_state": "start",
-            "event": "restart conversation"
-        },
-        {
-            "start_state": ["start"],
             "end_state": "done",
             "event": "identify task"
         },
@@ -28,8 +23,7 @@
     "events": [
         "greeting",
         "identify task",
-        "show uncertainty",
-        "restart conversation"
+        "show uncertainty"
     ],
     "event_examples": {
         "greeting": [
@@ -37,20 +31,21 @@
             "Hi",
             "Hey"
         ],
-        "identify task": [
-            "I want to go to Davis",
-            "where is the memorial union",
-            "How to save the location"
-        ],
         "show uncertainty": [
             "I don't know what to do",
             "I’m not sure what I need",
-            "I’m confused about how to proceed"
+            "I’m confused about how to proceed",
+            "What can I do now?",
+            "Could you help me figure out what to do?",
+            "How do I use this website?"
         ],
-        "restart conversation": [
-            "Can we start over",
-            "Start again",
-            "Start from the beginning"
+        "identify task": [
+            "I want to save Memorial Union to my favorites",
+            "How do I share this coffee shop location?",
+            "Can I add a stop between home and work?",
+            "I need walking directions to Central Park",
+            "Let me save this restaurant for later",
+            "I want to go to Davis"
         ]
     },
     "initial_state": "start"

@@ -7,7 +7,7 @@ model = "llama3"
 
 def send_to_llm(messages):
     r = requests.post(
-        "http://0.0.0.0:11434/api/chat",
+        "http://localhost:11434/api/chat",
         json={"model": model, "messages": messages, "stream": True},
         stream=True
     )
@@ -39,24 +39,28 @@ def task_classification(input, task_list):
     return task
 
 def text_classification(input, events, examples):
-    user_input = f'Your task is to perform text classification on the user input: "{input}". The classes are'
+    user_input = f'Your task is to classify the following input: "{input}". '
+    user_input += f'The classes are: '
     for event in events:
-        user_input += f' {event},'
-    user_input += f' error.'
-    user_input += f'Here are some examples for each classs: '
+        user_input += f'{event}, '
+    user_input = user_input[:-2]+'. '
+    user_input += f'Compare it with these examples and choose the most similar category:\n'
     
     for event in events:
         if event not in examples:
             continue
+        user_input += f'"{event}":\n'
         for example in examples[event]:
-            user_input += f'"{example}", '
-        user_input = user_input[:-2]
-        user_input += '. '
+            user_input += f'- {example}\n'
     
-    user_input += f'Only reply the answer. Just reply without any reasoning. reply only in lower case.'
+    user_input += f'\nIf the input doesn\'t match any category, reply with "error". '
+    user_input += f'Only reply with the category name in lowercase, without any explanation.'
+
+    print(user_input)
+    
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)
-    event  = message["content"]
+    event = message["content"]
     return event, message
 
 def name_entity_recognition(input):
@@ -64,7 +68,5 @@ def name_entity_recognition(input):
     message_list = [{"role": "user", "content": user_input}]
     message = send_to_llm(message_list)
     name  = message["content"]
-    print(name)
+    return name
 
-if __name__ == "__main__":
-    name_entity_recognition("I want to go to Kemper Hall")

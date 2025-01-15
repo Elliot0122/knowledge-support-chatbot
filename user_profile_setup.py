@@ -219,6 +219,7 @@ class UserProfile:
         task_data = load_task_list(type = "all")
 
         self.user_id = user_id
+        self.location = None
         self.dialogue_fsm = ParentFSM(fsm_data)
         self.workflow = Workflow(task_data['workflow'])
         self.goal_setting_workflow = GoalSettingWorkflow(task_data['workflow'])
@@ -232,7 +233,7 @@ class UserProfile:
             tasks[task_name] = Task(
                 name = task_name,
                 description=task_info["description"],
-                primitive_workflow=task_info["primitive_workflow"]
+                primitive_workflow=task_info["primitive workflow"]
             )
         return tasks
     
@@ -245,6 +246,12 @@ class UserProfile:
                 detail = primitive_detail
             )
         return primitives
+    
+    def get_location(self):
+        return self.location
+
+    def set_location(self, location):
+        self.location = location
     
     def get_subfsm_possible_events(self):
         return self.dialogue_fsm.sub_fsms[self.dialogue_fsm._get_current_state()]._get_possible_events()

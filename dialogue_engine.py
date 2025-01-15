@@ -1,26 +1,35 @@
 from nlu_unit import task_classification, text_classification, name_entity_recognition
-from nlg_unit import generate_sentences, load_nlg_example
+# from nlg_unit import generate_sentences, load_nlg_example
 from user_profile_setup import UserProfile
+from RAG import ResponseGenerator
 import secrets
-
-user_amount = 0
 
 def initialization():
     # events, event_examples = load_fsm(type = "events")
     # text_classification_learning(events, event_examples)
-    sample_sentence = load_nlg_example()
-    print(generate_sentences(sample_sentence, "opening", "start"))
-    return sample_sentence
+    user = UserProfile()
+    nlg = ResponseGenerator('module/nlg_example.json')
+    response = nlg.generate_response(
+        parent_fsm="opening",
+        subfsm="start"
+    )
+    return user, nlg, response
 
-def run(user, user_input, sample_sentence):
+def run(user, nlg, user_input):
     ## nlu for sub fsm
     # restart conversation with specific key word that should be told to the user
     if user_input == "restart conversation":
-        user.parent_fsm_handle_event("restart conversation")
-        user.subfsm_handle_event("greeting")
+        return initialization()
 
     events, examples = user.get_subfsm_possible_events()
     event, message = text_classification(user_input, events, examples)
+    if event not in events:
+        for i in events:
+            if event in i:
+                event = i
+                break
+    print(user.get_subfsm_state())
+    print(f"event: {event}")
     current_task_name = None
     ## handle events
     ### temporary for goal claification
@@ -33,19 +42,26 @@ def run(user, user_input, sample_sentence):
 
     ## nlu for parent fsm if needed
     if user.subfsm_is_done():
-        parent_event, examples = user.get_parent_fsm_possible_events()
-        parent_event, message = text_classification(user_input, parent_event, examples)
+        if user.get_parent_fsm_state() == "opening":
+            parent_event = event
+        else:
+            parent_event, examples = user.get_parent_fsm_possible_events()
+            parent_event, message = text_classification(user_input, parent_event, examples)
+        print(f"parent_event: {parent_event}")
         ## handle events
         user.parent_fsm_handle_event(parent_event)
         user.subfsm_handle_event(parent_event)
-
     ### temporary for goal claification
     if user.get_parent_fsm_state() == "goal clarification":
         if user.get_subfsm_state() == "task identification":
             user.set_goal_setting_next_task_selection(secrets.choice(user.get_goal_setting_current_task_choices()))
             current_task_name = user.get_goal_setting_next_task_selection()
+            if user.get_location() == None:
+                if current_task_name == "share location" or current_task_name == "save location" or current_task_name == "get directions":
+                    user.set_location(name_entity_recognition(user_input))
         elif user.get_subfsm_state() == "correct task":
             current_task_name = user.get_goal_setting_next_task_selection()
+            print(f"current_task_name: {current_task_name}")
             user.add_to_workflow_trajectory(current_task_name)
             user.select_goal_setting_next_task(current_task_name)             
         elif user.get_subfsm_state() == "incorrect task identification":
@@ -60,29 +76,29 @@ def run(user, user_input, sample_sentence):
         if user.get_subfsm_state() == "task identification":
             current_task_name = task_classification(user.get_workflow_task_input(), user.get_current_all_task_options())
             user.set_workflow_current_task(current_task_name)
+            if user.get_location() == None:
+                if current_task_name == "locate destination" or current_task_name == "get directions" or current_task_name == "share location" or current_task_name == "save location":
+                    user.set_location(name_entity_recognition(user_input))
         elif user.get_subfsm_state() == "incorrect task identification":
             user.remove_task_from_workflow_current_all_task_options(user.get_workflow_current_task())
             current_task_name = task_classification(user.get_workflow_task_input(), user.get_current_all_task_options())
             user.set_workflow_current_task(current_task_name)
             current_task_name = user.get_workflow_current_task()
+            if user.get_location() == None:
+                if current_task_name == "locate destination" or current_task_name == "get directions" or current_task_name == "share location" or current_task_name == "save location":
+                    user.set_location(name_entity_recognition(user_input))
     ### temporary for task identification
     ### temporary for task execution
     elif user.get_parent_fsm_state() == "task execution":
         if user.get_workflow_trajectory() == []:
-            print("Trajectory is empty")
-            return
+            return 
         
         current_task = user.get_task(user.get_workflow_trajectory()[user.get_workflow_trajectory_index()])
-
-        if user.get_subfsm_state() == "confirm task execution":
-            print(f'I will now guide you through the task "{current_task.get_name()}".')
-            return
 
         if user.get_subfsm_state() == "provide detail":
             current_primitive = user.get_primitive(current_task.get_next_primitive_selection())
             current_primitive.subtract_one_from_proficiency()
-            print(current_primitive.get_detail())
-            return
+            return current_primitive.get_detail()
 
         elif user.get_subfsm_state() == "provide other instruction":
             current_primitive = user.get_primitive(current_task.get_next_primitive_selection())
@@ -99,27 +115,27 @@ def run(user, user_input, sample_sentence):
         current_primitive = user.get_primitive(current_task.get_next_primitive_selection())
         current_primitive.add_one_to_proficiency()
         if current_primitive.get_proficiency() > 3:
-            print(f'Now, you should {current_primitive.get_name()}.')
+            return f'Now, you should {current_primitive.get_name()}.'
         else: 
-            print(current_primitive.get_detail())
-        
-        return
-    ### temporary for task execution
+            return current_primitive.get_detail()
 
     ## nlg
-    print(generate_sentences(sample_sentence, user.get_parent_fsm_state() , user.get_subfsm_state(), current_task_name))
+    response = nlg.generate_response(
+        parent_fsm = user.get_parent_fsm_state(),
+        subfsm = user.get_subfsm_state(),
+        task = current_task_name,
+        name_entity = user.get_location()
+    )
+    return response
 
-def client():
-    global user_amount
-    sample_sentence = initialization()
-    user = UserProfile(user_id = user_amount)
-    user_amount += 1
+# def client():
+#     user = initialization()
 
-    while True:
-        user_input = input()
-        if user_input == "exit":
-            exit()
-        run(user, user_input, sample_sentence)
+#     while True:
+#         user_input = input()
+#         if user_input == "exit":
+#             exit()
+#         run(user, user_input)
 
-if __name__ == "__main__":
-    client()
+# if __name__ == "__main__":
+#     client()

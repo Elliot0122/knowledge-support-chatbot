@@ -40,15 +40,20 @@
     ],
     "event_examples": {
         "show uncertainty": [
-            "I don't know",
             "I don't know what to do",
             "I’m not sure what I need",
-            "I’m confused about how to proceed"
+            "I’m confused about how to proceed",
+            "What can I do now?",
+            "Could you help me figure out what to do?",
+            "How do I use this website?"
         ],
         "identify task": [
-            "I want to go to Davis",
-            "where is the memorial union",
-            "How to save the location"
+            "I want to save Memorial Union to my favorites",
+            "How do I share this coffee shop location?",
+            "Can I add a stop between home and work?",
+            "I need walking directions to Central Park",
+            "Let me save this restaurant for later",
+            "I want to go to Davis"
         ],
         "confirm": [
             "Yes",

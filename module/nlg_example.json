@@ -1,0 +1,277 @@
+{
+    "opening": {
+        "start": {
+            "purpose": "greet the user and express the bot's readiness to assist",
+            "examples": [
+                "Welcome to Map Assist. How can I help you today?",
+                "Greetings from Map Assist! What can I assist you with today?",
+                "Need directions or have a question about Maps? I'm here to assist!"
+            ]
+        }
+    },
+    "goal clarification": {
+        "task identification": {
+            "tasks": {
+                "locate destination": {
+                    "purpose": "providing options to locate a destination on the map to user and ask if they want to do that",
+                    "examples": [
+                        "No worries. You can locate a destination on the map, do you want to do that?",
+                        "That's fine. You could find the location of a destination on the map, would you like to do that?"
+                    ]
+                },
+                "share location": {
+                    "purpose": "providing options to share a location with someone to user and ask if they want to do that",
+                    "examples": [
+                        "Perfect. Now you can share this location with someone, would you like to do that?",
+                        "Awesome. Now you can share this location with others, would you like to do that?"
+                    ]
+                },
+                "save location": {
+                    "purpose": "providing options to save a location in a list for later access to user and ask if they want to do that",
+                    "examples": [
+                        "Great. Now you can save this location in a list for later access, would you like to do that?",
+                        "Excellent. cou can store this location in a list, do you want to do that?"
+                    ]
+                },
+                "get directions": {
+                    "purpose": "providing options to get directions to a location to user and ask if they want to do that",
+                    "examples": [
+                        "Perfect. Now you can get directions to {destination}, would you like to do that?",
+                        "Awesome. Now you can get directions to {destination}, would you like to do that?"
+                    ]
+                },
+                "select travel mode": {
+                    "purpose": "providing options to get to a location with a specific travel mode to user and ask if they want to do that",
+                    "examples": [
+                        "Great. Now you can select a travel mode to get to this location, would you like to do that?",
+                        "Excellent. Now you can choose a travel mode to get to this place, would you like to do that?"
+                    ]
+                },
+                "add multiple destination": {
+                    "purpose": "providing options to add more destinations to a route to user and ask if they want to do that",
+                    "examples": [
+                        "Perfect. Now you can add more destinations to your route, would you like to do that?",
+                        "Awesome. Now you can add more stops to your journey, would you like to do that?"
+                    ]
+                }
+            }
+        },
+        "correct task": {
+            "tasks": {
+                "locate destination": {
+                    "purpose": "ask user the destination they want to locate on the map",
+                    "examples": [
+                        "What place do you want to find on the map?",
+                        "What place do you want to locate on the map?"
+                    ]
+                },
+                "share location": {
+                    "purpose": "confirm that the task 'sharing the location' would be in the following process",
+                    "examples": [
+                        "Great, let's share {destination} in the following process.",
+                        "Perfect! We'll send the address of {destination} in the following steps."
+                    ]
+                },
+                "save location": {
+                    "purpose": "confirm that the task 'saving the location' would be in the following process",
+                    "examples": [
+                        "Awesome, let's save {destination} in a list in the following process.",
+                        "Perfect! We'll add {destination} to your saved places in the following steps."
+                    ]
+                },
+                "get directions": {
+                    "purpose": "confirm that the task 'getting directions to a location' would be in the following process",
+                    "examples": [
+                        "Great, let's get the route to {destination} in the following process.",
+                        "Perfect! We'll find out how to get to {destination} in the following steps."
+                    ]
+                },
+                "select travel mode": {
+                    "purpose": "confirm that the task 'selecting a travel mode' would be in the following process",
+                    "examples": [
+                        "Awesome, I'll remember to ask you to select a travel mode.",
+                        "Excellent! I'll remind you to select your prefered travel mode."
+                    ]
+                },
+                "add multiple destination": {
+                    "purpose": "confirm that the task 'adding more destinations' would be in the following process",
+                    "examples": [
+                        "Great, let's create a multiple destination route in the following process.",
+                        "Perfect! We'll add more stops to your journey in the following steps."
+                    ]
+                },
+                "None": {
+                    "purpose": "State that the user has a plan right now and the bot will guide the user through the process. Don't ask any questions",
+                    "examples": [
+                        "Seems that you have a plan right now. Let me guide you through the process.",
+                        "I understand what you want to do. Let's get started!",
+                        "Got it! I'll help you with that step by step."
+                    ]
+                }
+            }
+        },
+        "incorrect task identification": {
+            "tasks": {
+                "locate destination": {
+                    "purpose": "providing an option of 'asking user the destination they want to locate on the map' because the previous option is incorrect",
+                    "examples": [
+                        "What about locating a destination on the map, do you want to do that?",
+                        "Perhaps you'd like to find a specific place on the map instead?"
+                    ]
+                },
+                "share location": {
+                    "purpose": "providing an option of 'sharing a location with someone' because the previous option is incorrect",
+                    "examples": [
+                        "How about sharing {destination} with someone, would you like to do that?",
+                        "Maybe you'd like to share {destination} with others instead?"
+                    ]
+                },
+                "save location": {
+                    "purpose": "providing an option of 'saving a location in a list for later access' because the previous option is incorrect",
+                    "examples": [
+                        "Would you prefer to save {destination} in a list for later access?",
+                        "What about storing {destination} in a list for future access instead?"
+                    ]
+                },
+                "get directions": {
+                    "purpose": "providing an option of 'getting directions to a location' because the previous option is incorrect",
+                    "examples": [
+                        "Do you want to get directions to {destination} instead?",
+                        "Perhaps you'd like to know how to get to {destination} instead?"
+                    ]
+                },
+                "select travel mode": {
+                    "purpose": "providing an option of 'getting to a location with a specific travel mode' because the previous option is incorrect",
+                    "examples": [
+                        "Would you like to choose a travel mode to get to this location?",
+                        "How about selecting a travel mode to reach this place instead?"
+                    ]
+                },
+                "add multiple destination": {
+                    "purpose": "providing an option of 'adding more destinations to a route' because the previous option is incorrect",
+                    "examples": [
+                        "Do you want to add more destinations to your route instead?",
+                        "Perhaps you'd like to add more stops to your journey instead?"
+                    ]
+                }
+            }
+        }
+    },
+    "task identification": {
+        "task identification": {
+            "tasks": {
+                "locate destination": {
+                    "purpose": "confirm that the user wants to locate a destination on the map",
+                    "examples": [
+                        "What you meant is that you want to locate {destination} on the map, right?",
+                        "So you're looking to find {destination} on Maps, is that correct?",
+                        "If I understand correctly, you want to find where {destination} is located?",
+                        "Let me confirm - you want to locate {destination} on the map?"
+                    ]
+                },
+                "share location": {
+                    "purpose": "confirm that the user wants to share a location with someone",
+                    "examples": [
+                        "Just to confirm, do you mean you want to share this location?",
+                        "Are you looking to share this place with someone?",
+                        "Would I be correct in saying you want to share this location?",
+                        "So you'd like to share this place with others, is that right?"
+                    ]
+                },
+                "save location": {
+                    "purpose": "confirm that the user wants to save a location in a list for later access",
+                    "examples": [
+                        "Just to confirm, do you mean you want to save this location to your list?",
+                        "So you'd like to save this place for later use, correct?",
+                        "Are you looking to add this location to your saved places?",
+                        "Would I be right in thinking you want to bookmark this location?"
+                    ]
+                },
+                "get directions": {
+                    "purpose": "confirm that the user wants to get directions to a location",
+                    "examples": [
+                        "To clarify, do you mean you want to get the directions to {destination}?",
+                        "So you're looking for directions to {destination}, is that right?",
+                        "Would I be correct in saying you need directions to {destination}?",
+                        "Let me confirm - you want to know how to get to {destination}?"
+                    ]
+                },
+                "select travel mode": {
+                    "purpose": "confirm that the user wants to get to a location with a specific travel mode",
+                    "examples": [
+                        "Just to confirm, want to get to {destination} by a specific travel mode?",
+                        "So you're looking to get to {destination} by a specific travel mode, is that right?",
+                        "Would I be correct in saying you want to get to {destination} by a specific travel mode?"
+                    ]
+                },
+                "add multiple destination": {
+                    "purpose": "confirm that the user wants to add more destinations to a route",
+                    "examples": [
+                        "Just to confirm, do you mean you want to go to multiple destinations?",
+                        "So you're looking to add more stops to your journey, is that right?",
+                        "Would I be correct in saying you want to visit multiple places?",
+                        "Let me confirm - you want to make this a multi-stop trip?"
+                    ]
+                }
+            }
+        },
+        "incorrect task identification": {
+            "tasks": {
+                "locate destination": {
+                    "purpose": "providing an option of 'asking user the destination they want to locate on the map' because the previous option is incorrect",
+                    "examples": [
+                        "I'm sorry I got it wrong. Do you mean you want locate {destination} on the map?",
+                        "My apologies for the confusion. Are you trying to find {destination} on Maps?",
+                        "Let me try again - are you looking to locate {destination} on the map?",
+                        "Sorry about that. Would you like to find where {destination} is?"
+                    ]
+                },
+                "share location": {
+                    "purpose": "providing an option of 'sharing a location with someone' because the previous option is incorrect",
+                    "examples": [
+                        "My apology. Do you mean you want to share this location?",
+                        "Sorry for the misunderstanding. Are you trying to share this place?",
+                        "Let me correct that - would you like to share this location?",
+                        "I apologize for the confusion. Are you looking to share this place with someone?"
+                    ]
+                },
+                "save location": {
+                    "purpose": "providing an option of 'saving a location in a list for later access' because the previous option is incorrect",
+                    "examples": [
+                        "I feel bad about the wrong prediction. Do you mean you want to save this location to your list?",
+                        "Sorry about that. Would you like to save this place for later?",
+                        "My mistake. Are you trying to bookmark this location?",
+                        "I apologize for the confusion. Would you like to add this to your saved places?"
+                    ]
+                },
+                "get directions": {
+                    "purpose": "providing an option of 'getting directions to a location' because the previous option is incorrect",
+                    "examples": [
+                        "My bad. Do you mean you want to get the directions to {destination}?",
+                        "Sorry for the confusion. Are you looking for directions to {destination}?",
+                        "I apologize - would you like to know how to get to {destination}?",
+                        "Let me correct that - are you trying to get directions to {destination}?"
+                    ]
+                },
+                "select travel mode": {
+                    "purpose": "providing an option of 'geting to a location with a specific travel mode' because the previous option is incorrect",
+                    "examples": [
+                        "I'm sorry I got it wrong. Do you mean you want to change the travel mode?",
+                        "My apologies. Would you like to switch between different travel options?",
+                        "Sorry about that. Are you trying to change how you'll get there?",
+                        "Let me correct that - do you want to choose a different way to travel?"
+                    ]
+                },
+                "add multiple destination": {
+                    "purpose": "providing an option of 'adding more destinations to a route' because the previous option is incorrect",
+                    "examples": [
+                        "I feel bad about the wrong prediction. Do you mean you want to go to multiple destinations?",
+                        "Sorry about that. Are you trying to add more stops to your journey?",
+                        "My mistake. Would you like to make this a multi-stop trip?",
+                        "I apologize for the confusion. Are you looking to visit multiple places?"
+                    ]
+                }
+            }
+        }
+    }
+}

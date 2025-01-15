@@ -1,7 +1,6 @@
 {
     "states": [
         "start",
-        "confirm task execution",
         "provide instruction",
         "provide detail",
         "provide other instruction",
@@ -9,19 +8,14 @@
     ],
     "transitions": [
         {
-            "start_state": ["start"],
-            "end_state": "confirm task execution",
-            "event": "confirm"
-        },
-        {
-            "start_state": ["start"],
-            "end_state": "confirm task execution",
-            "event": "negate"
-        },
-        {
-            "start_state": ["confirm task execution", "provide instruction", "provide detail", "provide other instruction"],
+            "start_state": ["start", "provide instruction", "provide detail", "provide other instruction"],
             "end_state": "provide instruction",
             "event": "confirm"
+        },
+        {
+            "start_state": ["start"],
+            "end_state": "provide instruction",
+            "event": "negate"
         },
         {
             "start_state": ["provide instruction", "provide detail", "provide other instruction"],
@@ -39,7 +33,7 @@
             "event": "negate"
         },
         {
-            "start_state": ["provide instruction", "provide detail", "confirm task execution"],
+            "start_state": ["provide instruction", "provide detail"],
             "end_state": "done",
             "event": "done"
         }
@@ -54,8 +48,8 @@
         "confirm": [
             "Yes",
             "Sure",
-            "Correct",
-            "Okay"
+            "OK. I clicked the search bar",
+            "OK. I input the destination"
         ],
         "negate": [
             "No",
@@ -63,14 +57,13 @@
             "Incorrect"
         ],
         "show uncertainty": [
-            "I'm not sure",
-            "I don't know",
+            "where is that?",
+            "I'm not sure how to do this.",
             "I'm confused"
         ],
         "request help": [
-            "Can you help me?",
-            "I need help",
-            "Help"
+            "I need more help",
+            "I need more information"
         ]
     },
     "initial_state": "start"
