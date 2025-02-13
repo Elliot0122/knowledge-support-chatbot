@@ -1,5 +1,5 @@
 import json
-from nlu_unit import send_to_llm
+from src.utils.nlu_unit import send_to_llm
 from typing import Optional, List
 
 class ResponseGenerator:

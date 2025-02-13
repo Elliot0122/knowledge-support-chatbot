@@ -1,5 +1,4 @@
-import random
-from load_json import load_task_list, load_fsm
+from src.utils.load_json import load_task_list, load_fsm
 
 class FSM:
     def __init__(self, fsm_data):
@@ -61,7 +60,7 @@ class ParentFSM(FSM):
         super().__init__(fsm_data)
         self.sub_fsms = {}
         for state in self.states:
-            sub_fsm_data = load_fsm(file_path=f'module/submodule/{state}.json', type='fsm')
+            sub_fsm_data = load_fsm(file_path=f'data/fsm/submodule/{state}.json', type='fsm')
             self.sub_fsms[state] = SubFSM(sub_fsm_data)
 
     def _parent_fsm_handle_event(self, event):

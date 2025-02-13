@@ -1,14 +1,11 @@
-from nlu_unit import task_classification, text_classification, name_entity_recognition
-# from nlg_unit import generate_sentences, load_nlg_example
-from user_profile_setup import UserProfile
-from RAG import ResponseGenerator
+from src.utils.nlu_unit import task_classification, text_classification, name_entity_recognition
+from src.models.user_profile_setup import UserProfile
+from src.utils.RAG import ResponseGenerator
 import secrets
 
 def initialization():
-    # events, event_examples = load_fsm(type = "events")
-    # text_classification_learning(events, event_examples)
     user = UserProfile()
-    nlg = ResponseGenerator('module/nlg_example.json')
+    nlg = ResponseGenerator('data/nlg/nlg_example.json')
     response = nlg.generate_response(
         parent_fsm="opening",
         subfsm="start"
@@ -127,15 +124,3 @@ def run(user, nlg, user_input):
         name_entity = user.get_location()
     )
     return response
-
-# def client():
-#     user = initialization()
-
-#     while True:
-#         user_input = input()
-#         if user_input == "exit":
-#             exit()
-#         run(user, user_input)
-
-# if __name__ == "__main__":
-#     client()

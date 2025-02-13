@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
-from dialogue_engine import initialization, run
+from src.core.dialogue_engine import initialization, run
 
 app = FastAPI()
 

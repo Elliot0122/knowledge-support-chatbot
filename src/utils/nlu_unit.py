@@ -1,6 +1,6 @@
 import json
 import requests
-from load_json import load_fsm, load_task_list
+from src.utils.load_json import load_fsm, load_task_list
 
 # NOTE: ollama must be running for this to work, start the ollama app or run `ollama serve`
 model = "llama3"
