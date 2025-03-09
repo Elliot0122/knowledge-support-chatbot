@@ -33,7 +33,7 @@
             "event": "negate"
         },
         {
-            "start_state": ["provide instruction", "provide detail"],
+            "start_state": ["provide instruction", "provide detail", "provide other instruction"],
             "end_state": "done",
             "event": "done"
         }
