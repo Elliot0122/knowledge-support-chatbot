@@ -29,8 +29,9 @@ async def start():
 @app.post("/chat")
 async def chat(message: Message):
     # Replace this with your chatbot logic
-    response = run(user, nlg, message.text)
-    return {"response": response}
+    if user.get_parent_fsm_state() == "task execution":
+        response = run(user, nlg, message.text)
+        return {"response": response}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=9000)
